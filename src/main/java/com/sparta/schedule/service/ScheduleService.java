@@ -1,5 +1,7 @@
 package com.sparta.schedule.service;
 
+import com.sparta.schedule.domain.Schedule;
+import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +20,13 @@ public class ScheduleService {
         return repository.findAll().stream()
                 .map(ScheduleResponseDto::new)
                 .toList();
+    }
+
+    public ScheduleResponseDto createSchedules(ScheduleRequestDto requestDto) {
+
+        Schedule schedule = new Schedule(requestDto);
+        Schedule savedSchedule = repository.save(schedule);
+
+        return new ScheduleResponseDto(savedSchedule);
     }
 }

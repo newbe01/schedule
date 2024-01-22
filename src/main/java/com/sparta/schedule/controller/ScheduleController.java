@@ -1,10 +1,10 @@
 package com.sparta.schedule.controller;
 
+import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +17,12 @@ public class ScheduleController {
     @GetMapping("schedules")
     public List<ScheduleResponseDto> getSchedules() {
         return service.getSchedules();
+    }
+
+    @PostMapping("schedules")
+    public ScheduleResponseDto createSchedules(@RequestBody ScheduleRequestDto requestDto) {
+        System.out.println("requestDto = " + requestDto);
+        return service.createSchedules(requestDto);
     }
 
 }

@@ -1,15 +1,19 @@
 package com.sparta.schedule.domain;
 
+import com.sparta.schedule.dto.ScheduleRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
 
 
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Getter
 @Entity
@@ -23,7 +27,7 @@ public class Schedule extends Timestamped{
     private String title;
 
     @Column
-    private String content;
+    private String contents;
 
     @Column
     private String nickname;
@@ -31,4 +35,17 @@ public class Schedule extends Timestamped{
     @Column
     private String password;
 
+    public Schedule(ScheduleRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+        this.nickname = requestDto.getNickname();
+        this.password = requestDto.getPassword();
+    }
+
+    public Schedule(String title, String content, String nickname, String password) {
+        this.title = title;
+        this.contents = content;
+        this.nickname = nickname;
+        this.password = password;
+    }
 }
