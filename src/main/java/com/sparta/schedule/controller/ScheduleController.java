@@ -2,6 +2,7 @@ package com.sparta.schedule.controller;
 
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
+import com.sparta.schedule.dto.ScheduleUpdateDto;
 import com.sparta.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,12 @@ public class ScheduleController {
 
     @PostMapping("/schedules")
     public ScheduleResponseDto createSchedules(@RequestBody ScheduleRequestDto requestDto) {
-        return new ScheduleResponseDto(service.createSchedules(requestDto));
+        return new ScheduleResponseDto(service.createSchedule(requestDto));
+    }
+
+    @PutMapping("/schedules/{id}")
+    public ScheduleResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateDto requestDto) {
+        return new ScheduleResponseDto(service.updateSchedule(id, requestDto));
     }
 
 }

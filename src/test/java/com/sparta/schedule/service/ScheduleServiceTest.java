@@ -2,9 +2,9 @@ package com.sparta.schedule.service;
 
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.dto.ScheduleRequestDto;
+import com.sparta.schedule.dto.ScheduleUpdateDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -30,7 +29,7 @@ class ScheduleServiceTest {
     void saveTest() {
         ScheduleRequestDto dto = new ScheduleRequestDto("title", "contents", "nickname", "password");
 
-        Schedule schedules = service.createSchedules(dto);
+        Schedule schedules = service.createSchedule(dto);
 
         assertThat(schedules.getTitle()).isEqualTo(dto.getTitle());
         assertThat(schedules.getContents()).isEqualTo(dto.getContents());
@@ -47,11 +46,11 @@ class ScheduleServiceTest {
         ScheduleRequestDto dto4 = new ScheduleRequestDto("title4", "contents4", "nickname", "password");
         ScheduleRequestDto dto5 = new ScheduleRequestDto("title5", "contents5", "nickname", "password");
 
-        service.createSchedules(dto1);
-        service.createSchedules(dto2);
-        service.createSchedules(dto3);
-        service.createSchedules(dto4);
-        service.createSchedules(dto5);
+        service.createSchedule(dto1);
+        service.createSchedule(dto2);
+        service.createSchedule(dto3);
+        service.createSchedule(dto4);
+        service.createSchedule(dto5);
 
         List<Schedule> schedules = service.getSchedules();
         assertThat(schedules.get(0).getTitle()).isEqualTo(dto5.getTitle());
@@ -66,16 +65,30 @@ class ScheduleServiceTest {
         ScheduleRequestDto dto4 = new ScheduleRequestDto("title4", "contents4", "nickname", "password");
         ScheduleRequestDto dto5 = new ScheduleRequestDto("title5", "contents5", "nickname", "password");
 
-        service.createSchedules(dto1);
-        service.createSchedules(dto2);
-        service.createSchedules(dto3);
-        Schedule schedules = service.createSchedules(dto4);
-        service.createSchedules(dto5);
+        service.createSchedule(dto1);
+        service.createSchedule(dto2);
+        service.createSchedule(dto3);
+        Schedule schedules = service.createSchedule(dto4);
+        service.createSchedule(dto5);
 
         Schedule schedule = service.getSchedule(schedules.getId());
 
         assertThat(schedule.getTitle()).isEqualTo(dto4.getTitle());
         assertThat(schedule.getContents()).isEqualTo(dto4.getContents());
+    }
+
+    @Test
+    void update() {
+        ScheduleRequestDto dto1 = new ScheduleRequestDto("title1", "contents1", "nickname", "password");
+
+        Schedule schedule = service.createSchedule(dto1);
+
+        ScheduleUpdateDto updateDto = new ScheduleUpdateDto("title3", "contents3", "nick", "password");
+
+        Schedule updated = service.updateSchedule(schedule.getId(), updateDto);
+
+        assertThat(updated.getTitle()).isEqualTo(updateDto.getTitle());
+        assertThat(updated.getContents()).isEqualTo(updateDto.getContents());
     }
 
 }

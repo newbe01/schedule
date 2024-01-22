@@ -1,6 +1,7 @@
 package com.sparta.schedule.domain;
 
 import com.sparta.schedule.dto.ScheduleRequestDto;
+import com.sparta.schedule.dto.ScheduleUpdateDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,5 +48,11 @@ public class Schedule extends Timestamped{
         this.contents = content;
         this.nickname = nickname;
         this.password = password;
+    }
+
+    public void updateSchedule(ScheduleUpdateDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.contents = requestDto.getContents();
+        this.nickname = requestDto.getNickname();
     }
 }
