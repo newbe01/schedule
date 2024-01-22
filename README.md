@@ -27,6 +27,6 @@
 
 ---
 
-** API 명세서 작성 **
+**API 명세서 작성**
 
 https://documenter.getpostman.com/view/27970422/2s9YymFiyJ
