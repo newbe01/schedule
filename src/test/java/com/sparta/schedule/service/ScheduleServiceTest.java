@@ -1,10 +1,14 @@
 package com.sparta.schedule.service;
 
 import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.repository.ScheduleRepository;
+import com.sparta.schedule.dto.ScheduleRequestDto;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,35 +21,61 @@ import static org.junit.jupiter.api.Assertions.*;
 class ScheduleServiceTest {
 
     @Autowired
-    private ScheduleRepository repository;
+    private ScheduleService service;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
-    void createSchedule() {
-        Schedule schedule = new Schedule("title", "contents", "nickname", "pw");
+    void saveTest() {
+        ScheduleRequestDto dto = new ScheduleRequestDto("title", "contents", "nickname", "password");
 
-        Schedule savedOne = repository.save(schedule);
+        Schedule schedules = service.createSchedules(dto);
 
-        assertThat(savedOne).isEqualTo(schedule);
+        assertThat(schedules.getTitle()).isEqualTo(dto.getTitle());
+        assertThat(schedules.getContents()).isEqualTo(dto.getContents());
+        assertThat(schedules.getNickname()).isEqualTo(dto.getNickname());
+        assertThat(schedules.getPassword()).isEqualTo(dto.getPassword());
+    }
+
+    @Rollback
+    @Test
+    void findAllTest() {
+        ScheduleRequestDto dto1 = new ScheduleRequestDto("title1", "contents1", "nickname", "password");
+        ScheduleRequestDto dto2 = new ScheduleRequestDto("title2", "contents2", "nickname", "password");
+        ScheduleRequestDto dto3 = new ScheduleRequestDto("title3", "contents3", "nickname", "password");
+        ScheduleRequestDto dto4 = new ScheduleRequestDto("title4", "contents4", "nickname", "password");
+        ScheduleRequestDto dto5 = new ScheduleRequestDto("title5", "contents5", "nickname", "password");
+
+        service.createSchedules(dto1);
+        service.createSchedules(dto2);
+        service.createSchedules(dto3);
+        service.createSchedules(dto4);
+        service.createSchedules(dto5);
+
+        List<Schedule> schedules = service.getSchedules();
+        assertThat(schedules.get(0).getTitle()).isEqualTo(dto5.getTitle());
+        assertThat(schedules.get(0).getContents()).isEqualTo(dto5.getContents());
     }
 
     @Test
-    void findAll() {
-        Schedule schedule1 = new Schedule("title1", "contents1", "nickname1", "pw1");
-        Schedule schedule2 = new Schedule("title2", "contents2", "nickname2", "pw2");
-        Schedule schedule3 = new Schedule("title3", "contents3", "nickname3", "pw3");
-        Schedule schedule4 = new Schedule("title4", "contents4", "nickname4", "pw4");
-        Schedule schedule5 = new Schedule("title5", "contents5", "nickname5", "pw5");
-        Schedule schedule6 = new Schedule("title6", "contents6", "nickname6", "pw6");
+    void findOne() {
+        ScheduleRequestDto dto1 = new ScheduleRequestDto("title1", "contents1", "nickname", "password");
+        ScheduleRequestDto dto2 = new ScheduleRequestDto("title2", "contents2", "nickname", "password");
+        ScheduleRequestDto dto3 = new ScheduleRequestDto("title3", "contents3", "nickname", "password");
+        ScheduleRequestDto dto4 = new ScheduleRequestDto("title4", "contents4", "nickname", "password");
+        ScheduleRequestDto dto5 = new ScheduleRequestDto("title5", "contents5", "nickname", "password");
 
-        repository.save(schedule1);
-        repository.save(schedule2);
-        repository.save(schedule3);
-        repository.save(schedule4);
-        repository.save(schedule5);
-        repository.save(schedule6);
+        service.createSchedules(dto1);
+        service.createSchedules(dto2);
+        service.createSchedules(dto3);
+        Schedule schedules = service.createSchedules(dto4);
+        service.createSchedules(dto5);
 
-        List<Schedule> findAll = repository.findAll();
+        Schedule schedule = service.getSchedule(schedules.getId());
 
-        assertThat(findAll.size()).isEqualTo(6);
+        assertThat(schedule.getTitle()).isEqualTo(dto4.getTitle());
+        assertThat(schedule.getContents()).isEqualTo(dto4.getContents());
     }
+
 }

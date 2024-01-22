@@ -14,15 +14,20 @@ public class ScheduleController {
 
     private final ScheduleService service;
 
-    @GetMapping("schedules")
+    @GetMapping("/schedules")
     public List<ScheduleResponseDto> getSchedules() {
-        return service.getSchedules();
+        return service.getSchedules().stream().map(ScheduleResponseDto::new).toList();
     }
 
-    @PostMapping("schedules")
+    @GetMapping("/schedules/{id}")
+    public ScheduleResponseDto getSchedule(@PathVariable Long id) {
+        return new ScheduleResponseDto(service.getSchedule(id));
+    }
+
+
+    @PostMapping("/schedules")
     public ScheduleResponseDto createSchedules(@RequestBody ScheduleRequestDto requestDto) {
-        System.out.println("requestDto = " + requestDto);
-        return service.createSchedules(requestDto);
+        return new ScheduleResponseDto(service.createSchedules(requestDto));
     }
 
 }

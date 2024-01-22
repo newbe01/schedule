@@ -16,17 +16,19 @@ public class ScheduleService {
     private final ScheduleRepository repository;
 
 
-    public List<ScheduleResponseDto> getSchedules() {
-        return repository.findAll().stream()
-                .map(ScheduleResponseDto::new)
-                .toList();
+    public List<Schedule> getSchedules() {
+        return repository.findAllByOrderByCreatAtDesc();
     }
 
-    public ScheduleResponseDto createSchedules(ScheduleRequestDto requestDto) {
+    public Schedule getSchedule(Long id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
+    }
+
+    public Schedule createSchedules(ScheduleRequestDto requestDto) {
 
         Schedule schedule = new Schedule(requestDto);
-        Schedule savedSchedule = repository.save(schedule);
 
-        return new ScheduleResponseDto(savedSchedule);
+        return repository.save(schedule);
     }
+
 }
