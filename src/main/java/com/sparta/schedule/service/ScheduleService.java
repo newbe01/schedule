@@ -46,4 +46,14 @@ public class ScheduleService {
 
         return schedule;
     }
+
+    public void deleteSchedule(Long id, ScheduleUpdateDto requestDto) {
+        Schedule schedule = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
+
+        if (!schedule.getPassword().equals(requestDto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 틀림");
+        }
+
+        repository.delete(schedule);
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 @SpringBootTest
@@ -89,6 +90,19 @@ class ScheduleServiceTest {
 
         assertThat(updated.getTitle()).isEqualTo(updateDto.getTitle());
         assertThat(updated.getContents()).isEqualTo(updateDto.getContents());
+    }
+
+    @Test
+    void delete() {
+        ScheduleRequestDto dto1 = new ScheduleRequestDto("title1", "contents1", "nickname", "password");
+
+        Schedule schedule = service.createSchedule(dto1);
+        ScheduleUpdateDto dto = new ScheduleUpdateDto(null, null, null, "password");
+
+
+        service.deleteSchedule(schedule.getId(), dto);
+
+        assertThatThrownBy(() -> service.getSchedule(schedule.getId())).isInstanceOf(IllegalArgumentException.class);
     }
 
 }

@@ -36,4 +36,10 @@ public class ScheduleController {
         return new ScheduleResponseDto(service.updateSchedule(id, requestDto));
     }
 
+    @DeleteMapping("schedules/{id}")
+    public String deleteSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateDto requestDto) {
+        service.deleteSchedule(id, requestDto);
+        return "삭제 성공";
+    }
+
 }
