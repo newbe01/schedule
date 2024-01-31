@@ -1,9 +1,11 @@
 package com.sparta.schedule.service;
 
 import com.sparta.schedule.domain.Schedule;
+import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleUpdateDto;
 import com.sparta.schedule.repository.ScheduleRepository;
+import com.sparta.schedule.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,22 +16,25 @@ import java.util.List;
 @Service
 public class ScheduleService {
 
-    private final ScheduleRepository repository;
+    private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
 
     public List<Schedule> getSchedules() {
-        return repository.findAllByOrderByCreatAtDesc();
+        return scheduleRepository.findAllByOrderByCreatAtDesc();
     }
 
     public Schedule getSchedule(Long id) {
         return findOne(id);
     }
 
-    public Schedule createSchedule(ScheduleRequestDto requestDto) {
+    public Schedule createSchedule(ScheduleRequestDto requestDto, String username) {
 
-        Schedule schedule = new Schedule(requestDto);
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("없는 회원"));
 
-        return repository.save(schedule);
+        Schedule schedule = new Schedule(requestDto, user);
+
+        return scheduleRepository.save(schedule);
     }
 
     @Transactional
@@ -48,17 +53,17 @@ public class ScheduleService {
 
         isValidPassword(requestDto, schedule);
 
-        repository.delete(schedule);
+        scheduleRepository.delete(schedule);
     }
 
     private Schedule findOne(Long id) {
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
+        return scheduleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
     }
 
     private static void isValidPassword(ScheduleUpdateDto requestDto, Schedule schedule) {
-        if (!schedule.getPassword().equals(requestDto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 틀림");
-        }
+//        if (!schedule.getPassword().equals(requestDto.getPassword())) {
+//            throw new IllegalArgumentException("비밀번호 틀림");
+//        }
     }
 
 }

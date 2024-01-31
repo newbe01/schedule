@@ -1,44 +1,52 @@
 package com.sparta.schedule.controller;
 
+import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.dto.ScheduleRequestDto;
 import com.sparta.schedule.dto.ScheduleResponseDto;
 import com.sparta.schedule.dto.ScheduleUpdateDto;
 import com.sparta.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @RestController
 public class ScheduleController {
 
-    private final ScheduleService service;
+    private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
     public List<ScheduleResponseDto> getSchedules() {
-        return service.getSchedules().stream().map(ScheduleResponseDto::new).toList();
+        return scheduleService.getSchedules().stream().map(ScheduleResponseDto::new).toList();
     }
 
     @GetMapping("/schedules/{id}")
     public ScheduleResponseDto getSchedule(@PathVariable Long id) {
-        return new ScheduleResponseDto(service.getSchedule(id));
+        return new ScheduleResponseDto(scheduleService.getSchedule(id));
     }
 
 
     @PostMapping("/schedules")
-    public ScheduleResponseDto createSchedules(@RequestBody ScheduleRequestDto requestDto) {
-        return new ScheduleResponseDto(service.createSchedule(requestDto));
+    public ResponseEntity<ScheduleResponseDto> createSchedules(@RequestBody ScheduleRequestDto requestDto, @AuthenticationPrincipal UserDetails userDetails) {
+        Schedule schedule = scheduleService.createSchedule(requestDto, userDetails.getUsername());
+
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
     }
 
     @PutMapping("/schedules/{id}")
     public ScheduleResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateDto requestDto) {
-        return new ScheduleResponseDto(service.updateSchedule(id, requestDto));
+        return new ScheduleResponseDto(scheduleService.updateSchedule(id, requestDto));
     }
 
     @DeleteMapping("schedules/{id}")
     public String deleteSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateDto requestDto) {
-        service.deleteSchedule(id, requestDto);
+        scheduleService.deleteSchedule(id, requestDto);
         return "삭제 성공";
     }
 
