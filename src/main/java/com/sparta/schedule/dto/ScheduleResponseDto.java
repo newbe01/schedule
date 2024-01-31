@@ -23,7 +23,6 @@ public class ScheduleResponseDto {
         this.id = schedule.getId();
         this.title = schedule.getTitle();
         this.contents = schedule.getContents();
-        this.nickname = schedule.getNickname();
         this.createAt = schedule.getCreatAt();
         this.modifiedAt = schedule.getModifiedAt();
     }
