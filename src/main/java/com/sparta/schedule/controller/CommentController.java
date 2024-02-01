@@ -29,4 +29,16 @@ public class CommentController {
         return new ResponseEntity<>(new CommentResponse(comment), HttpStatus.OK);
     }
 
+    @PutMapping("/{scheduleId}/comment/{commentId}")
+    public ResponseEntity<CommentResponse> updateComment(
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("commentId") Long commentId,
+            @RequestBody CommentRequest commentRequest,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+
+        Comment comment = commentService.updateComment(scheduleId, commentId, commentRequest, userDetails.getUser());
+        return new ResponseEntity<>(new CommentResponse(comment), HttpStatus.OK);
+    }
+
 }

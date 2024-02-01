@@ -2,8 +2,12 @@ package com.sparta.schedule.domain;
 
 import com.sparta.schedule.dto.comment.CommentRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 public class Comment extends Timestamped {
@@ -26,5 +30,9 @@ public class Comment extends Timestamped {
         this.content = request.getContent();
         this.schedule = schedule;
         this.user = user;
+    }
+
+    public void updateComment(CommentRequest commentRequest) {
+        this.content = commentRequest.getContent();
     }
 }

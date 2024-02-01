@@ -27,4 +27,22 @@ public class CommentService {
 
         return commentRepository.save(new Comment(request, schedule, findUser));
     }
+
+    @Transactional
+    public Comment updateComment(Long scheduleId, Long commentId, CommentRequest commentRequest, User user) {
+
+        scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 유저"));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("없는 댓글"));
+
+        if (!comment.getUser().equals(findUser)) {
+            throw new IllegalArgumentException("다른 회원");
+        }
+
+        System.out.println("commentRequest = " + commentRequest.getContent());
+        comment.updateComment(commentRequest);
+
+        return comment;
+    }
 }
