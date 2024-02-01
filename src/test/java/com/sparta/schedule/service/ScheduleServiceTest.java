@@ -1,8 +1,8 @@
 //package com.sparta.schedule.service;
 //
 //import com.sparta.schedule.domain.Schedule;
-//import com.sparta.schedule.dto.ScheduleRequestDto;
-//import com.sparta.schedule.dto.ScheduleUpdateDto;
+//import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+//import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
 //import jakarta.persistence.EntityManager;
 //import jakarta.persistence.PersistenceContext;
 //import org.junit.jupiter.api.Test;

@@ -2,8 +2,8 @@ package com.sparta.schedule.service;
 
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
-import com.sparta.schedule.dto.ScheduleRequestDto;
-import com.sparta.schedule.dto.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
 import com.sparta.schedule.repository.ScheduleRepository;
 import com.sparta.schedule.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +20,8 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
 
-    public List<Schedule> getSchedules() {
-        return scheduleRepository.findAllByOrderByCreatAtDesc();
+    public List<Schedule> getSchedules(String username) {
+        return scheduleRepository.findAllByUser_UsernameOrderByCreatAtDesc(username);
     }
 
     public Schedule getSchedule(Long id) {

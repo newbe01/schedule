@@ -1,4 +1,4 @@
-package com.sparta.schedule.dto;
+package com.sparta.schedule.dto.schedule;
 
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
@@ -16,6 +16,8 @@ public class ScheduleResponseDto {
     private String title;
     private String contents;
     private String username;
+
+    private boolean CompletionYn;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
 
@@ -23,6 +25,7 @@ public class ScheduleResponseDto {
         this.title = schedule.getTitle();
         this.contents = schedule.getContents();
         this.username = schedule.getUser().getUsername();
+        this.CompletionYn = schedule.isCompletionYn();
         this.createAt = schedule.getCreatAt();
         this.modifiedAt = schedule.getModifiedAt();
     }

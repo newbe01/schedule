@@ -1,9 +1,9 @@
 package com.sparta.schedule.controller;
 
 import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.dto.ScheduleRequestDto;
-import com.sparta.schedule.dto.ScheduleResponseDto;
-import com.sparta.schedule.dto.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+import com.sparta.schedule.dto.schedule.ScheduleResponseDto;
+import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
 import com.sparta.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    public List<ScheduleResponseDto> getSchedules() {
-        return scheduleService.getSchedules().stream().map(ScheduleResponseDto::new).toList();
+    public List<ScheduleResponseDto> getSchedules(@AuthenticationPrincipal UserDetails userDetails) {
+        return scheduleService.getSchedules(userDetails.getUsername()).stream().map(ScheduleResponseDto::new).toList();
     }
 
     @GetMapping("/schedules/{id}")

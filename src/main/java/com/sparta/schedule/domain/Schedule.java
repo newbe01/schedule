@@ -1,7 +1,7 @@
 package com.sparta.schedule.domain;
 
-import com.sparta.schedule.dto.ScheduleRequestDto;
-import com.sparta.schedule.dto.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,11 +26,14 @@ public class Schedule extends Timestamped{
     @Column
     private String contents;
 
+    @Column
+    private boolean CompletionYn = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "schedule")
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
     private List<Comment> contentList;
 
     public Schedule(ScheduleRequestDto requestDto) {
