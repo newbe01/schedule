@@ -1,7 +1,6 @@
 package com.sparta.schedule.dto.schedule;
 
 import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

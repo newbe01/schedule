@@ -27,7 +27,7 @@ public class Schedule extends Timestamped{
     private String contents;
 
     @Column
-    private boolean CompletionYn = false;
+    private boolean completionYn = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
