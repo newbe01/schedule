@@ -45,4 +45,18 @@ public class CommentService {
 
         return comment;
     }
+
+    @Transactional
+    public void deleteComment(Long scheduleId, Long commentId, User user) {
+        scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 유저"));
+
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("없는 댓글"));
+
+        if (!comment.getUser().equals(findUser)) {
+            throw new IllegalArgumentException("다른 회원");
+        }
+
+        commentRepository.delete(comment);
+    }
 }
