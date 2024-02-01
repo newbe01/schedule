@@ -58,8 +58,18 @@ public class ScheduleService {
         scheduleRepository.delete(schedule);
     }
 
+    @Transactional
+    public void completeSchedule(Long id, User user) {
+        Schedule schedule = findOne(id);
+
+        if (!schedule.getUser().equals(user)) {
+            throw new IllegalArgumentException("다른유저");
+        }
+
+        schedule.updateCompletion();
+    }
+
     private Schedule findOne(Long id) {
         return scheduleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
     }
-
 }

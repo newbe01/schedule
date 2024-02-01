@@ -53,4 +53,8 @@ public class Schedule extends Timestamped{
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
     }
+
+    public void updateCompletion() {
+        this.completionYn = true;
+    }
 }

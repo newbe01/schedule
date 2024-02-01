@@ -52,6 +52,14 @@ public class ScheduleController {
                 HttpStatus.OK);
     }
 
+    @PutMapping("schedules/{id}/complete")
+    public ResponseEntity<String> completeSchedule(@PathVariable Long id,
+                                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        scheduleService.completeSchedule(id, userDetails.getUser());
+        return ResponseEntity.ok("일정 완료");
+    }
+
+    @Deprecated
     @DeleteMapping("schedules/{id}")
     public String deleteSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateDto requestDto) {
         scheduleService.deleteSchedule(id, requestDto);
