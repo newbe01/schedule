@@ -1,5 +1,6 @@
 package com.sparta.schedule.domain;
 
+import com.sparta.schedule.dto.comment.CommentRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -21,4 +22,9 @@ public class Comment extends Timestamped {
     @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
+    public Comment(CommentRequest request, Schedule schedule, User user) {
+        this.content = request.getContent();
+        this.schedule = schedule;
+        this.user = user;
+    }
 }
