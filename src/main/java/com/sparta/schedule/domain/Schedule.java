@@ -36,16 +36,9 @@ public class Schedule extends Timestamped{
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
     private List<Comment> contentList;
 
-    public Schedule(ScheduleRequestDto requestDto) {
-        this.title = requestDto.getTitle();
-        this.contents = requestDto.getContents();
-//        this.password = requestDto.getPassword();
-    }
-
     public Schedule(ScheduleRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-//        this.password = requestDto.getPassword();
         this.user = user;
     }
 

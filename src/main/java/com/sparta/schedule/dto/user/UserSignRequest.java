@@ -1,6 +1,6 @@
 package com.sparta.schedule.dto.user;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 
 @Getter

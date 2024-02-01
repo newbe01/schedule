@@ -1,6 +1,5 @@
 package com.sparta.schedule.domain;
 
-import com.sparta.schedule.dto.user.UserSignRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
