@@ -25,7 +25,7 @@ public class CommentController {
             @RequestBody CommentRequest request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        Comment comment = commentService.addComment(scheduleId, request, userDetails.getUsername());
+        Comment comment = commentService.addComment(scheduleId, request, userDetails.getUser());
         return new ResponseEntity<>(new CommentResponse(comment), HttpStatus.OK);
     }
 

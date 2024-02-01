@@ -28,11 +28,11 @@ public class ScheduleService {
         return findOne(id);
     }
 
-    public Schedule createSchedule(ScheduleRequestDto requestDto, String username) {
+    public Schedule createSchedule(ScheduleRequestDto requestDto, User user) {
 
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("없는 회원"));
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 회원"));
 
-        Schedule schedule = new Schedule(requestDto, user);
+        Schedule schedule = new Schedule(requestDto, findUser);
 
         return scheduleRepository.save(schedule);
     }

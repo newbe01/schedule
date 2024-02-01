@@ -20,12 +20,11 @@ public class CommentService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Comment addComment(Long scheduleId, CommentRequest request, String username) {
+    public Comment addComment(Long scheduleId, CommentRequest request, User user) {
 
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("없는 유저"));
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 유저"));
 
-
-        return commentRepository.save(new Comment(request, schedule, user));
+        return commentRepository.save(new Comment(request, schedule, findUser));
     }
 }

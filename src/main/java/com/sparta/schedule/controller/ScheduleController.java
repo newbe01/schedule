@@ -38,7 +38,7 @@ public class ScheduleController {
 
     @PostMapping("/schedules")
     public ResponseEntity<ScheduleResponseDto> createSchedules(@RequestBody ScheduleRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Schedule schedule = scheduleService.createSchedule(requestDto, userDetails.getUsername());
+        Schedule schedule = scheduleService.createSchedule(requestDto, userDetails.getUser());
 
         return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
     }
