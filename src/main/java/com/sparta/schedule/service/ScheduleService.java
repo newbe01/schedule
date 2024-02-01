@@ -30,7 +30,7 @@ public class ScheduleService {
 
     public Schedule createSchedule(ScheduleRequestDto requestDto, User user) {
 
-        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 회원"));
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 회원입니다."));
 
         Schedule schedule = new Schedule(requestDto, findUser);
 
@@ -63,13 +63,13 @@ public class ScheduleService {
         Schedule schedule = findOne(id);
 
         if (!schedule.getUser().equals(user)) {
-            throw new IllegalArgumentException("다른유저");
+            throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
         }
 
         schedule.updateCompletion();
     }
 
     private Schedule findOne(Long id) {
-        return scheduleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
+        return scheduleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정입니다."));
     }
 }

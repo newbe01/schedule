@@ -25,17 +25,10 @@ public class UserService {
 
         Optional<User> findUser = userRepository.findByUsername(request.getUsername());
         if (findUser.isPresent()) {
-            throw new IllegalArgumentException("중복된 회원입니다.");
+            throw new IllegalArgumentException("중복된 username 입니다.");
         }
 
         userRepository.save(new User(username, password));
     }
 
-//    @Transactional(readOnly = true)
-//    public boolean userSignin(UserSignRequest request) {
-//
-//        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new IllegalArgumentException("없는 회원"));
-//
-//        return user.getUsername().equals(request.getUsername()) || user.getPassword().equals(request.getPassword());
-//    }
 }

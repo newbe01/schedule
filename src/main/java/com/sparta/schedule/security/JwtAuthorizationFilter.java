@@ -1,7 +1,7 @@
 package com.sparta.schedule.security;
 
 import com.sparta.schedule.jwt.JwtUtil;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +37,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
+                res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                res.setCharacterEncoding("utf-8");
+                res.getWriter().write("토큰이 유효하지 않습니다.");
                 return;
             }
 
