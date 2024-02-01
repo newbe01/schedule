@@ -1,6 +1,8 @@
 package com.sparta.schedule.controller;
 
 import com.sparta.schedule.domain.Schedule;
+import com.sparta.schedule.domain.User;
+import com.sparta.schedule.dto.schedule.ScheduleListResponse;
 import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.schedule.dto.schedule.ScheduleResponseDto;
 import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
@@ -13,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -22,11 +25,9 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    public ResponseEntity<List<ScheduleResponseDto>> getSchedules(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new ResponseEntity<> (
-                scheduleService.getSchedules(userDetails.getUsername()).stream().map(ScheduleResponseDto::new).toList(),
-                HttpStatus.OK
-        );
+    public ResponseEntity<List<ScheduleListResponse>> getSchedules() {
+        return new ResponseEntity<>(scheduleService.getSchedules().stream().map(ScheduleListResponse::new).toList()
+                , HttpStatus.OK);
     }
 
     @GetMapping("/schedules/{id}")

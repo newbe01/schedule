@@ -20,8 +20,8 @@ public class ScheduleService {
     private final UserRepository userRepository;
 
 
-    public List<Schedule> getSchedules(String username) {
-        return scheduleRepository.findAllByUser_UsernameOrderByCreatAtDesc(username);
+    public List<User> getSchedules() {
+        return userRepository.findAll();
     }
 
     public Schedule getSchedule(Long id) {

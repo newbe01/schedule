@@ -4,6 +4,7 @@ import com.sparta.schedule.jwt.JwtUtil;
 import com.sparta.schedule.security.JwtAuthenticationFilter;
 import com.sparta.schedule.security.JwtAuthorizationFilter;
 import com.sparta.schedule.security.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -66,9 +67,17 @@ public class WebSecurityConfig {
                         .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
                         .requestMatchers("/api/users/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
                         .requestMatchers(HttpMethod.GET, "/api/schedules/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/schedules").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
+        http.exceptionHandling((exceptionHandling) ->
+                exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setCharacterEncoding("utf-8");
+                            response.getWriter().write("인증 처리 문제");
+                        })
+        );
 
         // 필터 관리
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);

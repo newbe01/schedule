@@ -1,12 +1,11 @@
 package com.sparta.schedule.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -22,6 +21,9 @@ public class User extends Timestamped {
     private String username;
 
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Schedule> scheduleList = new ArrayList<>();
 
     public User(String username, String password) {
         this.username = username;
