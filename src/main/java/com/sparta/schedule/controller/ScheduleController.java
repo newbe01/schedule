@@ -4,6 +4,7 @@ import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.schedule.dto.schedule.ScheduleResponseDto;
 import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
+import com.sparta.schedule.security.UserDetailsImpl;
 import com.sparta.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,26 +23,33 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    public List<ScheduleResponseDto> getSchedules(@AuthenticationPrincipal UserDetails userDetails) {
-        return scheduleService.getSchedules(userDetails.getUsername()).stream().map(ScheduleResponseDto::new).toList();
+    public ResponseEntity<List<ScheduleResponseDto>> getSchedules(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return new ResponseEntity<> (
+                scheduleService.getSchedules(userDetails.getUsername()).stream().map(ScheduleResponseDto::new).toList(),
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("/schedules/{id}")
-    public ScheduleResponseDto getSchedule(@PathVariable Long id) {
-        return new ScheduleResponseDto(scheduleService.getSchedule(id));
+    public ResponseEntity<ScheduleResponseDto> getSchedule(@PathVariable Long id) {
+        return new ResponseEntity<>(new ScheduleResponseDto(scheduleService.getSchedule(id)), HttpStatus.OK);
     }
 
 
     @PostMapping("/schedules")
-    public ResponseEntity<ScheduleResponseDto> createSchedules(@RequestBody ScheduleRequestDto requestDto, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<ScheduleResponseDto> createSchedules(@RequestBody ScheduleRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Schedule schedule = scheduleService.createSchedule(requestDto, userDetails.getUsername());
 
         return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
     }
 
     @PutMapping("/schedules/{id}")
-    public ScheduleResponseDto updateSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateDto requestDto) {
-        return new ScheduleResponseDto(scheduleService.updateSchedule(id, requestDto));
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id,
+                                              @RequestBody ScheduleUpdateDto requestDto,
+                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return new ResponseEntity<>(
+                new ScheduleResponseDto(scheduleService.updateSchedule(id, requestDto, userDetails.getUser())),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("schedules/{id}")

@@ -38,10 +38,12 @@ public class ScheduleService {
     }
 
     @Transactional
-    public Schedule updateSchedule(Long id, ScheduleUpdateDto requestDto) {
+    public Schedule updateSchedule(Long id, ScheduleUpdateDto requestDto, User user) {
         Schedule schedule = findOne(id);
 
-        isValidPassword(requestDto, schedule);
+        if (!schedule.getUser().equals(user)) {
+            throw new IllegalArgumentException("다른유저");
+        }
 
         schedule.updateSchedule(requestDto);
 
@@ -51,19 +53,13 @@ public class ScheduleService {
     public void deleteSchedule(Long id, ScheduleUpdateDto requestDto) {
         Schedule schedule = findOne(id);
 
-        isValidPassword(requestDto, schedule);
+//        isValidPassword(requestDto, schedule);
 
         scheduleRepository.delete(schedule);
     }
 
     private Schedule findOne(Long id) {
         return scheduleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정"));
-    }
-
-    private static void isValidPassword(ScheduleUpdateDto requestDto, Schedule schedule) {
-//        if (!schedule.getPassword().equals(requestDto.getPassword())) {
-//            throw new IllegalArgumentException("비밀번호 틀림");
-//        }
     }
 
 }

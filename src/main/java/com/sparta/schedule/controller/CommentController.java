@@ -3,6 +3,7 @@ package com.sparta.schedule.controller;
 import com.sparta.schedule.domain.Comment;
 import com.sparta.schedule.dto.comment.CommentRequest;
 import com.sparta.schedule.dto.comment.CommentResponse;
+import com.sparta.schedule.security.UserDetailsImpl;
 import com.sparta.schedule.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class CommentController {
     public ResponseEntity<CommentResponse> addComment(
             @PathVariable("scheduleId") Long scheduleId,
             @RequestBody CommentRequest request,
-            @AuthenticationPrincipal UserDetails userDetails) {
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         Comment comment = commentService.addComment(scheduleId, request, userDetails.getUsername());
         return new ResponseEntity<>(new CommentResponse(comment), HttpStatus.OK);
