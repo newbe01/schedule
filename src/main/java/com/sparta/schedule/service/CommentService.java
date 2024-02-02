@@ -22,8 +22,8 @@ public class CommentService {
     @Transactional
     public Comment addComment(Long scheduleId, CommentRequest request, User user) {
 
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정입니다."));
-        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 사용자입니다."));
+        Schedule schedule = findSchedule(scheduleId);
+        User findUser = findUser(user);
 
         return commentRepository.save(new Comment(request, schedule, findUser));
     }
@@ -31,10 +31,9 @@ public class CommentService {
     @Transactional
     public Comment updateComment(Long scheduleId, Long commentId, CommentRequest commentRequest, User user) {
 
-        scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정입니다."));
-        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 사용자입니다."));
-
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("없는 댓글입니다."));
+        findSchedule(scheduleId);
+        User findUser = findUser(user);
+        Comment comment = findComment(commentId);
 
         if (!comment.getUser().equals(findUser)) {
             throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
@@ -48,15 +47,27 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long scheduleId, Long commentId, User user) {
-        scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정입니다."));
-        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 사용자입니다."));
 
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("없는 댓글입니다."));
+        findSchedule(scheduleId);
+        User findUser = findUser(user);
+        Comment comment = findComment(commentId);
 
         if (!comment.getUser().equals(findUser)) {
             throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
         }
 
         commentRepository.delete(comment);
+    }
+
+    private Schedule findSchedule(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정입니다."));
+    }
+
+    private User findUser(User user) {
+        return userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 사용자입니다."));
+    }
+
+    private Comment findComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("없는 댓글입니다."));
     }
 }

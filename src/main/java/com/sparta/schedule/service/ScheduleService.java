@@ -19,15 +19,7 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
-
-    public List<User> getSchedules() {
-        return userRepository.findAll();
-    }
-
-    public Schedule getSchedule(Long id) {
-        return findOne(id);
-    }
-
+    @Transactional
     public Schedule createSchedule(ScheduleRequestDto requestDto, User user) {
 
         User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 회원입니다."));
@@ -37,25 +29,25 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
+    public Schedule getSchedule(Long id) {
+        return findOne(id);
+    }
+
+    public List<User> getSchedules() {
+        return userRepository.findAll();
+    }
+
     @Transactional
     public Schedule updateSchedule(Long id, ScheduleUpdateDto requestDto, User user) {
         Schedule schedule = findOne(id);
 
         if (!schedule.getUser().equals(user)) {
-            throw new IllegalArgumentException("다른유저");
+            throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
         }
 
         schedule.updateSchedule(requestDto);
 
         return schedule;
-    }
-
-    public void deleteSchedule(Long id, ScheduleUpdateDto requestDto) {
-        Schedule schedule = findOne(id);
-
-//        isValidPassword(requestDto, schedule);
-
-        scheduleRepository.delete(schedule);
     }
 
     @Transactional

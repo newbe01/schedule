@@ -15,7 +15,6 @@ public class ScheduleResponseDto {
     private String title;
     private String contents;
     private String username;
-
     private boolean CompletionYn;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;

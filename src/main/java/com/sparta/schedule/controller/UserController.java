@@ -19,7 +19,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> userSignUp(@RequestBody @Valid UserSignRequest request) {
-
         userService.userSignup(request);
 
         return ResponseEntity.ok("회원가입 성공");

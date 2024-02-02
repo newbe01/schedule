@@ -24,32 +24,43 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    @GetMapping("/schedules")
-    public ResponseEntity<List<ScheduleListResponse>> getSchedules() {
-        return new ResponseEntity<>(scheduleService.getSchedules().stream().map(ScheduleListResponse::new).toList()
-                , HttpStatus.OK);
+    @PostMapping("/schedules")
+    public ResponseEntity<ScheduleResponseDto> createSchedules(
+            @RequestBody ScheduleRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        Schedule schedule = scheduleService.createSchedule(requestDto, userDetails.getUser());
+        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
+
+        return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/schedules/{id}")
     public ResponseEntity<ScheduleResponseDto> getSchedule(@PathVariable Long id) {
-        return new ResponseEntity<>(new ScheduleResponseDto(scheduleService.getSchedule(id)), HttpStatus.OK);
+        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(scheduleService.getSchedule(id));
+
+        return new ResponseEntity<>(scheduleResponseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/schedules")
+    public ResponseEntity<List<ScheduleListResponse>> getSchedules() {
+        List<User> schedules = scheduleService.getSchedules();
+        List<ScheduleListResponse> listResponses = schedules.stream().map(ScheduleListResponse::new).toList();
 
-    @PostMapping("/schedules")
-    public ResponseEntity<ScheduleResponseDto> createSchedules(@RequestBody ScheduleRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Schedule schedule = scheduleService.createSchedule(requestDto, userDetails.getUser());
-
-        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
+        return new ResponseEntity<>(listResponses, HttpStatus.OK);
     }
+
 
     @PutMapping("/schedules/{id}")
-    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id,
-                                              @RequestBody ScheduleUpdateDto requestDto,
-                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new ResponseEntity<>(
-                new ScheduleResponseDto(scheduleService.updateSchedule(id, requestDto, userDetails.getUser())),
-                HttpStatus.OK);
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(
+            @PathVariable Long id,
+            @RequestBody ScheduleUpdateDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        Schedule schedule = scheduleService.updateSchedule(id, requestDto, userDetails.getUser());
+        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
+
+        return new ResponseEntity<>(scheduleResponseDto,HttpStatus.OK);
     }
 
     @PutMapping("schedules/{id}/complete")
@@ -57,13 +68,6 @@ public class ScheduleController {
                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         scheduleService.completeSchedule(id, userDetails.getUser());
         return ResponseEntity.ok("일정 완료");
-    }
-
-    @Deprecated
-    @DeleteMapping("schedules/{id}")
-    public String deleteSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateDto requestDto) {
-        scheduleService.deleteSchedule(id, requestDto);
-        return "삭제 성공";
     }
 
 }

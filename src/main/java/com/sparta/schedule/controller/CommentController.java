@@ -22,9 +22,10 @@ public class CommentController {
     public ResponseEntity<CommentResponse> addComment(
             @PathVariable("scheduleId") Long scheduleId,
             @RequestBody CommentRequest request,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
         Comment comment = commentService.addComment(scheduleId, request, userDetails.getUser());
+
         return new ResponseEntity<>(new CommentResponse(comment), HttpStatus.OK);
     }
 
