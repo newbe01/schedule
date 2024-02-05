@@ -48,6 +48,12 @@ dependencies {
 
     // json
     implementation 'org.json:json:20230227'
+
+    // swagger
+//    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+//    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.2.0'
+//    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.3.0'
 }
 
 tasks.named('test') {
