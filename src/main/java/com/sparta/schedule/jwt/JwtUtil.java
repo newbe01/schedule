@@ -51,10 +51,15 @@ public class JwtUtil {
 
     // header 에서 JWT 가져오기
     public String getJwtFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader(JWT_HEADER);
+
+        String bearerToken =
+                request.getHeader(JWT_HEADER) != null ?
+                        request.getHeader(JWT_HEADER) : request.getHeader("Authorization");
+
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
+
         return null;
     }
 

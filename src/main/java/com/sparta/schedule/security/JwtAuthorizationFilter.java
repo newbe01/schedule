@@ -1,7 +1,7 @@
 package com.sparta.schedule.security;
 
 import com.sparta.schedule.jwt.JwtUtil;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
