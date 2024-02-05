@@ -65,3 +65,9 @@
 **API 명세서 작성**
 
 https://documenter.getpostman.com/view/27970422/2s9YymFiyJ
+
+--- 
+
+erd, usecase
+* [ERD](https://github.com/newbe01/schedule/blob/main/documents/schedule-erd.svg)
+* [USECASE](https://github.com/newbe01/schedule/blob/main/documents/schedule.svg)
