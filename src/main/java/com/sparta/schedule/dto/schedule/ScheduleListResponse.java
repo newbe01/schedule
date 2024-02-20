@@ -26,7 +26,8 @@ public class ScheduleListResponse {
                 user.getScheduleList()
                         .stream()
                         .map(ScheduleResponseDto::new)
-                        .sorted(Comparator.comparing(ScheduleResponseDto::getCreateAt).reversed())
+                        .sorted(Comparator.comparing(
+                                ScheduleResponseDto::getCreateAt, Comparator.nullsFirst(Comparator.reverseOrder())))
                         .toList());
     }
 }
