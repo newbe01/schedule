@@ -69,7 +69,7 @@ class ScheduleRepositoryTest {
 
         // then
         assertThatThrownBy(() -> scheduleRepository.findById(savedSchedule.getId()).orElseThrow(() -> new IllegalArgumentException("")))
-                .isInstanceOf(IllegalArgumentException.class);;
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     private Schedule createSchedule() {
