@@ -6,9 +6,11 @@ import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("test")
 @DisplayName("댓글 Dto 테스트")
 class CommentDtoTest {
 

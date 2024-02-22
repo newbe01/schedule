@@ -4,10 +4,11 @@ import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 @DisplayName("일정 테스트")
 class ScheduleTest {
 
