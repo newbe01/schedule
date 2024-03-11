@@ -4,13 +4,14 @@ import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
 import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
+import com.sparta.schedule.exception.NotFoundException;
+import com.sparta.schedule.exception.PermissionDeniedException;
 import com.sparta.schedule.repository.ScheduleRepository;
 import com.sparta.schedule.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +23,8 @@ public class ScheduleService {
     @Transactional
     public Schedule createSchedule(ScheduleRequestDto requestDto, User user) {
 
-        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 회원입니다."));
+        User findUser = userRepository.findById(user.getId())
+            .orElseThrow(() -> new NotFoundException("없는 회원입니다."));
 
         Schedule schedule = new Schedule(requestDto, findUser);
 
@@ -42,7 +44,7 @@ public class ScheduleService {
         Schedule schedule = findOne(id);
 
         if (!schedule.getUser().equals(user)) {
-            throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            throw new PermissionDeniedException("작성자만 삭제/수정할 수 있습니다.");
         }
 
         schedule.updateSchedule(requestDto);
@@ -55,13 +57,14 @@ public class ScheduleService {
         Schedule schedule = findOne(id);
 
         if (!schedule.getUser().equals(user)) {
-            throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            throw new PermissionDeniedException("작성자만 삭제/수정할 수 있습니다.");
         }
 
         schedule.updateCompletion();
     }
 
     private Schedule findOne(Long id) {
-        return scheduleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("없는 일정입니다."));
+        return scheduleRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("없는 일정입니다."));
     }
 }

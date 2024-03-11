@@ -4,6 +4,8 @@ import com.sparta.schedule.domain.Comment;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.comment.CommentRequest;
+import com.sparta.schedule.exception.NotFoundException;
+import com.sparta.schedule.exception.PermissionDeniedException;
 import com.sparta.schedule.repository.CommentRepository;
 import com.sparta.schedule.repository.ScheduleRepository;
 import com.sparta.schedule.repository.UserRepository;
@@ -29,14 +31,15 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment updateComment(Long scheduleId, Long commentId, CommentRequest commentRequest, User user) {
+    public Comment updateComment(Long scheduleId, Long commentId, CommentRequest commentRequest,
+        User user) {
 
         findSchedule(scheduleId);
         User findUser = findUser(user);
         Comment comment = findComment(commentId);
 
         if (!comment.getUser().equals(findUser)) {
-            throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            throw new PermissionDeniedException("작성자만 삭제/수정할 수 있습니다.");
         }
 
         System.out.println("commentRequest = " + commentRequest.getContent());
@@ -53,21 +56,24 @@ public class CommentService {
         Comment comment = findComment(commentId);
 
         if (!comment.getUser().equals(findUser)) {
-            throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
+            throw new PermissionDeniedException("작성자만 삭제/수정할 수 있습니다.");
         }
 
         commentRepository.delete(comment);
     }
 
     private Schedule findSchedule(Long scheduleId) {
-        return scheduleRepository.findById(scheduleId).orElseThrow(() -> new IllegalArgumentException("없는 일정입니다."));
+        return scheduleRepository.findById(scheduleId)
+            .orElseThrow(() -> new NotFoundException("없는 일정입니다."));
     }
 
     private User findUser(User user) {
-        return userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("없는 사용자입니다."));
+        return userRepository.findById(user.getId())
+            .orElseThrow(() -> new NotFoundException("없는 사용자입니다."));
     }
 
     private Comment findComment(Long commentId) {
-        return commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("없는 댓글입니다."));
+        return commentRepository.findById(commentId)
+            .orElseThrow(() -> new NotFoundException("없는 댓글입니다."));
     }
 }

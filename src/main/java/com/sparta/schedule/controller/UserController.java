@@ -2,6 +2,7 @@ package com.sparta.schedule.controller;
 
 import com.sparta.schedule.common.CommonResponse;
 import com.sparta.schedule.dto.user.UserSignRequest;
+import com.sparta.schedule.exception.ValidationException;
 import com.sparta.schedule.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,8 +44,7 @@ public class UserController {
                 errorMessages +=
                     fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
             }
-            // TODO : exception
-            return new CommonResponse<>(errorMessages);
+            throw new ValidationException(errorMessages);
         }
 
         userService.userSignup(request);
