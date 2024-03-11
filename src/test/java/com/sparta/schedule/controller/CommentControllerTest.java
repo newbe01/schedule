@@ -7,7 +7,7 @@ import com.sparta.schedule.domain.Comment;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.comment.CommentRequest;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import com.sparta.schedule.security.UserDetailsImpl;
 import com.sparta.schedule.service.CommentService;
 import org.junit.jupiter.api.BeforeEach;
@@ -176,7 +176,7 @@ class CommentControllerTest {
     }
 
     private Schedule createSchedule() {
-        return new Schedule(new ScheduleRequestDto("test", "test"), createUser());
+        return new Schedule(new ScheduleRequest("test", "test"), createUser());
     }
 
     private CommentRequest commentRequest() {

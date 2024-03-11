@@ -1,6 +1,7 @@
 package com.sparta.schedule.controller;
 
 import com.sparta.schedule.common.CommonResponse;
+import com.sparta.schedule.dto.user.UserResponse;
 import com.sparta.schedule.dto.user.UserSignRequest;
 import com.sparta.schedule.exception.ValidationException;
 import com.sparta.schedule.service.UserService;
@@ -33,7 +34,7 @@ public class UserController {
     })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/signup")
-    public CommonResponse<Void> userSignUp(
+    public CommonResponse<UserResponse> userSignUp(
         @Parameter(description = "회원 requestDto")
         @RequestBody @Valid UserSignRequest request
         , BindingResult bindingResult
@@ -47,9 +48,12 @@ public class UserController {
             throw new ValidationException(errorMessages);
         }
 
-        userService.userSignup(request);
+        UserResponse userResponse = userService.userSignup(request);
 
-        return new CommonResponse<>("회원가입 성공");
+        return CommonResponse.<UserResponse>builder()
+            .data(userResponse)
+            .message("회원가입 성공")
+            .build();
     }
 
 }

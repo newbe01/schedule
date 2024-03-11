@@ -18,16 +18,16 @@ public class ScheduleListResponse {
     private String username;
 
     @Schema(description = "할일 목록")
-    private List<ScheduleResponseDto> schedules = new ArrayList<>();
+    private List<ScheduleResponse> schedules = new ArrayList<>();
 
     public ScheduleListResponse(User user) {
         this.username = user.getUsername();
         this.schedules.addAll(
                 user.getScheduleList()
                         .stream()
-                        .map(ScheduleResponseDto::new)
+                        .map(ScheduleResponse::new)
                         .sorted(Comparator.comparing(
-                                ScheduleResponseDto::getCreateAt, Comparator.nullsFirst(Comparator.reverseOrder())))
+                                ScheduleResponse::getCreateAt, Comparator.nullsFirst(Comparator.reverseOrder())))
                         .toList());
     }
 }

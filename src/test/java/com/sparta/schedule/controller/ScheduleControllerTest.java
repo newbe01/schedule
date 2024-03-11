@@ -5,8 +5,8 @@ import com.sparta.schedule.config.MockSpringSecurityFilter;
 import com.sparta.schedule.config.WebSecurityConfig;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
-import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
+import com.sparta.schedule.dto.schedule.ScheduleUpdate;
 import com.sparta.schedule.security.UserDetailsImpl;
 import com.sparta.schedule.service.ScheduleService;
 import org.junit.jupiter.api.BeforeEach;
@@ -65,11 +65,11 @@ class ScheduleControllerTest {
     @Test
     void createScheduleTest() throws Exception {
         // given
-        ScheduleRequestDto requestDto = requestDto();
+        ScheduleRequest requestDto = requestDto();
         String request = mapper.writeValueAsString(requestDto);
         this.mockUserSetup();
 
-        when(scheduleService.createSchedule(any(ScheduleRequestDto.class), any(User.class)))
+        when(scheduleService.createSchedule(any(ScheduleRequest.class), any(User.class)))
                 .thenReturn(new Schedule(requestDto, createUser()));
 
         // when & then
@@ -88,11 +88,11 @@ class ScheduleControllerTest {
     @Test
     void createScheduleTest_fail() throws Exception {
         // given
-        ScheduleRequestDto requestDto = requestDto();
+        ScheduleRequest requestDto = requestDto();
         String request = mapper.writeValueAsString(requestDto);
         this.mockUserSetup();
 
-        when(scheduleService.createSchedule(any(ScheduleRequestDto.class), any(User.class)))
+        when(scheduleService.createSchedule(any(ScheduleRequest.class), any(User.class)))
                 .thenThrow(new IllegalArgumentException("없는 회원입니다."));
 
         // when & then
@@ -161,13 +161,13 @@ class ScheduleControllerTest {
     @Test
     void updateScheduleTest() throws Exception {
         // given
-        ScheduleUpdateDto updateDto = new ScheduleUpdateDto("update", "update");
+        ScheduleUpdate updateDto = new ScheduleUpdate("update", "update");
         this.mockUserSetup();
 
-        when(scheduleService.updateSchedule(anyLong(), any(ScheduleUpdateDto.class), any(User.class)))
+        when(scheduleService.updateSchedule(anyLong(), any(ScheduleUpdate.class), any(User.class)))
                 .thenReturn(
                         new Schedule(
-                                new ScheduleRequestDto(updateDto.getTitle(), updateDto.getContents()),
+                                new ScheduleRequest(updateDto.getTitle(), updateDto.getContents()),
                                 createUser()
                         )
                 );
@@ -188,10 +188,10 @@ class ScheduleControllerTest {
     @Test
     void updateScheduleTest_fail() throws Exception {
         // given
-        ScheduleUpdateDto updateDto = new ScheduleUpdateDto("update", "update");
+        ScheduleUpdate updateDto = new ScheduleUpdate("update", "update");
         this.mockUserSetup();
 
-        when(scheduleService.updateSchedule(anyLong(), any(ScheduleUpdateDto.class), any(User.class)))
+        when(scheduleService.updateSchedule(anyLong(), any(ScheduleUpdate.class), any(User.class)))
                 .thenThrow(new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다."));
 
         // when & then
@@ -236,8 +236,8 @@ class ScheduleControllerTest {
         return new User("test", "testPassword");
     }
 
-    private ScheduleRequestDto requestDto() {
-        return new ScheduleRequestDto("test title", "test content");
+    private ScheduleRequest requestDto() {
+        return new ScheduleRequest("test title", "test content");
     }
 
 }

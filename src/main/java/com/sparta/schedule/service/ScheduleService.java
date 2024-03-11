@@ -4,8 +4,9 @@ import com.sparta.schedule.business.ScheduleBusiness;
 import com.sparta.schedule.business.UserBusiness;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
-import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
+import com.sparta.schedule.dto.schedule.ScheduleResponse;
+import com.sparta.schedule.dto.schedule.ScheduleUpdate;
 import com.sparta.schedule.exception.PermissionDeniedException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,26 +21,29 @@ public class ScheduleService {
     private final ScheduleBusiness scheduleBusiness;
     private final UserBusiness userBusiness;
 
-    public Schedule createSchedule(ScheduleRequestDto requestDto, User user) {
+    public ScheduleResponse createSchedule(ScheduleRequest requestDto, User user) {
 
         User findUser = userBusiness.findById(user.getId());
 
         Schedule schedule = new Schedule(requestDto, findUser);
+        Schedule saveSchedule = scheduleBusiness.save(schedule);
 
-        return scheduleBusiness.save(schedule);
+        return ScheduleResponse.of(saveSchedule);
     }
 
     @Transactional(readOnly = true)
-    public Schedule getSchedule(Long id) {
-        return scheduleBusiness.findById(id);
+    public ScheduleResponse getSchedule(Long id) {
+        Schedule schedule = scheduleBusiness.findById(id);
+        return ScheduleResponse.of(schedule);
     }
 
     @Transactional(readOnly = true)
     public List<User> getSchedules() {
+        // todo: querydsl refactoring
         return userBusiness.findAll();
     }
 
-    public Schedule updateSchedule(Long id, ScheduleUpdateDto requestDto, User user) {
+    public ScheduleResponse updateSchedule(Long id, ScheduleUpdate requestDto, User user) {
         Schedule schedule = scheduleBusiness.findById(id);
 
         if (!schedule.getUser().equals(user)) {
@@ -47,11 +51,11 @@ public class ScheduleService {
         }
 
         schedule.updateSchedule(requestDto);
-
-        return scheduleBusiness.updateSchedule(schedule);
+        Schedule updateSchedule = scheduleBusiness.updateSchedule(schedule);
+        return ScheduleResponse.of(updateSchedule);
     }
 
-    public void completeSchedule(Long id, User user) {
+    public ScheduleResponse completeSchedule(Long id, User user) {
         Schedule schedule = scheduleBusiness.findById(id);
 
         if (!schedule.getUser().equals(user)) {
@@ -59,7 +63,8 @@ public class ScheduleService {
         }
 
         schedule.updateCompletion();
-        scheduleBusiness.updateSchedule(schedule);
+        Schedule updateSchedule = scheduleBusiness.updateSchedule(schedule);
+        return ScheduleResponse.of(updateSchedule);
     }
 
 }

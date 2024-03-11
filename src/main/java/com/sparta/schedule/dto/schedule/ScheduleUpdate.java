@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @Getter
 @Schema(description = "할일 수정삭제 requestDto")
-public class ScheduleUpdateDto {
+public class ScheduleUpdate {
 
     @Schema(description = "할일 제목")
     private String title;

@@ -46,9 +46,11 @@ public class CommentController {
 
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        Comment comment = commentService.addComment(scheduleId, request, userDetails.getUser());
+        CommentResponse response = commentService.addComment(scheduleId, request, userDetails.getUser());
 
-        return new CommonResponse<>(new CommentResponse(comment));
+        return CommonResponse.<CommentResponse>builder()
+            .data(response)
+            .build();
     }
 
     @Operation(summary = "update comment", description = "댓글 수정", responses = {
@@ -68,9 +70,12 @@ public class CommentController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
 
-        Comment comment = commentService.updateComment(scheduleId, commentId, commentRequest,
+        CommentResponse response = commentService.updateComment(scheduleId, commentId, commentRequest,
             userDetails.getUser());
-        return new CommonResponse<>(new CommentResponse(comment));
+
+        return CommonResponse.<CommentResponse>builder()
+            .data(response)
+            .build();
     }
 
     @Operation(summary = "delete comment", description = "댓글 삭제", responses = {
@@ -89,7 +94,9 @@ public class CommentController {
     ) {
         commentService.deleteComment(scheduleId, commentId, userDetails.getUser());
 
-        return new CommonResponse<>("삭제 완료");
+        return CommonResponse.<Void>builder()
+            .message("삭제 완료")
+            .build();
     }
 
 }

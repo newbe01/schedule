@@ -7,6 +7,7 @@ import com.sparta.schedule.domain.Comment;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.comment.CommentRequest;
+import com.sparta.schedule.dto.comment.CommentResponse;
 import com.sparta.schedule.exception.PermissionDeniedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,16 @@ public class CommentService {
     private final ScheduleBusiness scheduleBusiness;
     private final UserBusiness userBusiness;
 
-    public Comment addComment(Long scheduleId, CommentRequest request, User user) {
+    public CommentResponse addComment(Long scheduleId, CommentRequest request, User user) {
 
         Schedule schedule = scheduleBusiness.findById(scheduleId);
         User findUser = userBusiness.findById(user.getId());
 
-        return commentBusiness.save(new Comment(request, schedule, findUser));
+        Comment comment = commentBusiness.save(new Comment(request, schedule, findUser));
+        return CommentResponse.of(comment);
     }
 
-    public Comment updateComment(Long scheduleId, Long commentId, CommentRequest commentRequest,
+    public CommentResponse updateComment(Long scheduleId, Long commentId, CommentRequest commentRequest,
         User user) {
 
         scheduleBusiness.findById(scheduleId);
@@ -41,7 +43,8 @@ public class CommentService {
         }
 
         comment.updateComment(commentRequest);
-        return commentBusiness.udpateComment(comment);
+        Comment updateComment = commentBusiness.udpateComment(comment);
+        return CommentResponse.of(updateComment);
     }
 
     public void deleteComment(Long scheduleId, Long commentId, User user) {

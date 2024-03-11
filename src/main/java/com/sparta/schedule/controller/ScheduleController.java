@@ -1,12 +1,11 @@
 package com.sparta.schedule.controller;
 
 import com.sparta.schedule.common.CommonResponse;
-import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.schedule.ScheduleListResponse;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
-import com.sparta.schedule.dto.schedule.ScheduleResponseDto;
-import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
+import com.sparta.schedule.dto.schedule.ScheduleResponse;
+import com.sparta.schedule.dto.schedule.ScheduleUpdate;
 import com.sparta.schedule.security.UserDetailsImpl;
 import com.sparta.schedule.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,16 +39,18 @@ public class ScheduleController {
     })
     @PostMapping("/schedules")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<ScheduleResponseDto> createSchedules(
+    public CommonResponse<ScheduleResponse> createSchedules(
         @Parameter(description = "할일 requestDto")
-        @RequestBody ScheduleRequestDto requestDto,
+        @RequestBody ScheduleRequest requestDto,
 
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        Schedule schedule = scheduleService.createSchedule(requestDto, userDetails.getUser());
-        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
+        ScheduleResponse response = scheduleService.createSchedule(requestDto,
+            userDetails.getUser());
 
-        return new CommonResponse<>(scheduleResponseDto);
+        return CommonResponse.<ScheduleResponse>builder()
+            .data(response)
+            .build();
     }
 
     @Operation(summary = "find schedule", description = "할일 조회", responses = {
@@ -58,14 +59,15 @@ public class ScheduleController {
     })
     @GetMapping("/schedules/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<ScheduleResponseDto> getSchedule(
+    public CommonResponse<ScheduleResponse> getSchedule(
         @Parameter(description = "할일 번호")
         @PathVariable Long id
     ) {
-        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(
-            scheduleService.getSchedule(id));
+        ScheduleResponse response = scheduleService.getSchedule(id);
 
-        return new CommonResponse<>(scheduleResponseDto);
+        return CommonResponse.<ScheduleResponse>builder()
+            .data(response)
+            .build();
     }
 
     @Operation(summary = "find schedules", description = "할일 목록 조회", responses = {
@@ -76,10 +78,14 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public CommonResponse<List<ScheduleListResponse>> getSchedules() {
         List<User> schedules = scheduleService.getSchedules();
-        List<ScheduleListResponse> listResponses = schedules.stream().map(ScheduleListResponse::new)
+
+        List<ScheduleListResponse> responses = schedules.stream()
+            .map(ScheduleListResponse::new)
             .toList();
 
-        return new CommonResponse<>(listResponses);
+        return CommonResponse.<List<ScheduleListResponse>>builder()
+            .data(responses)
+            .build();
     }
 
     @Operation(summary = "update schedule", description = "할일 수정", responses = {
@@ -88,19 +94,24 @@ public class ScheduleController {
     })
     @PutMapping("/schedules/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<ScheduleResponseDto> updateSchedule(
+    public CommonResponse<ScheduleResponse> updateSchedule(
         @Parameter(description = "할일 번호")
         @PathVariable Long id,
 
         @Parameter(description = "할일 requestDto")
-        @RequestBody ScheduleUpdateDto requestDto,
+        @RequestBody ScheduleUpdate requestDto,
 
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        Schedule schedule = scheduleService.updateSchedule(id, requestDto, userDetails.getUser());
-        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
 
-        return new CommonResponse<>(scheduleResponseDto);
+        ScheduleResponse response = scheduleService.updateSchedule(
+            id, requestDto, userDetails.getUser()
+        );
+
+        return CommonResponse.<ScheduleResponse>builder()
+            .data(response)
+            .build();
+
     }
 
     @Operation(summary = "complete schedule", description = "할일 완료", responses = {
@@ -108,13 +119,16 @@ public class ScheduleController {
         @ApiResponse(responseCode = "405", description = "Invalid")
     })
     @PutMapping("schedules/{id}/complete")
-    public CommonResponse<Void> completeSchedule(
+    public CommonResponse<ScheduleResponse> completeSchedule(
         @Parameter(description = "할일 번호")
         @PathVariable Long id,
 
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        scheduleService.completeSchedule(id, userDetails.getUser());
-        return new CommonResponse<>("할일 완료");
+        ScheduleResponse response = scheduleService.completeSchedule(id, userDetails.getUser());
+        return CommonResponse.<ScheduleResponse>builder()
+            .message("할일 완료")
+            .data(response)
+            .build();
     }
 
 }

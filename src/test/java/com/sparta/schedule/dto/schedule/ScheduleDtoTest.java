@@ -16,7 +16,7 @@ class ScheduleDtoTest {
     @Test
     void newScheduleRequest() {
         // given
-        ScheduleRequestDto request = new ScheduleRequestDto("test title", "test contents");
+        ScheduleRequest request = new ScheduleRequest("test title", "test contents");
 
         // when & then
         assertThat(request.getTitle()).isEqualTo("test title");
@@ -27,7 +27,7 @@ class ScheduleDtoTest {
     @Test
     void newScheduleResponseDto() {
         // given
-        ScheduleResponseDto response = new ScheduleResponseDto(createSchedule());
+        ScheduleResponse response = new ScheduleResponse(createSchedule());
 
         // when & then
         assertThat(response.getTitle()).isEqualTo("test title");
@@ -40,7 +40,7 @@ class ScheduleDtoTest {
     @Test
     void newScheduleUpdateDto() {
         // given
-        ScheduleUpdateDto request = new ScheduleUpdateDto("update title", "update content");
+        ScheduleUpdate request = new ScheduleUpdate("update title", "update content");
 
         // when & then
         assertThat(request.getTitle()).isEqualTo("update title");
@@ -71,7 +71,7 @@ class ScheduleDtoTest {
 
     private Schedule createSchedule() {
         return new Schedule(
-                new ScheduleRequestDto("test title", "test content"),
+                new ScheduleRequest("test title", "test content"),
                 new User("testUser", "testPw")
         );
     }

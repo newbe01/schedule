@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "할일 requestDto")
-public class ScheduleRequestDto {
+public class ScheduleRequest {
 
     @Schema(description = "할일 제목")
     private String title;

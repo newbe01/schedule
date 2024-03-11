@@ -1,13 +1,18 @@
 package com.sparta.schedule.dto.comment;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.sparta.schedule.domain.Comment;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Builder
 @Schema( description = "댓글 responseDto")
+@JsonInclude(Include.NON_NULL)
 public class CommentResponse {
 
     @Schema(description = "댓글")
@@ -28,5 +33,14 @@ public class CommentResponse {
         this.username = comment.getUser().getUsername();
         this.createAt = comment.getCreatAt();
         this.modifiedAt = comment.getModifiedAt();
+    }
+
+    public static CommentResponse of(Comment comment) {
+        return CommentResponse.builder()
+            .content(comment.getContent())
+            .username(comment.getUser().getUsername())
+            .createAt(comment.getCreatAt())
+            .modifiedAt(comment.getModifiedAt())
+            .build();
     }
 }

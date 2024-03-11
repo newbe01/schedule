@@ -3,7 +3,7 @@ package com.sparta.schedule.dto.comment;
 import com.sparta.schedule.domain.Comment;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -49,7 +49,7 @@ class CommentDtoTest {
                 1L,
                 "test content",
                 createUser(),
-                new Schedule(new ScheduleRequestDto("test title", "test cont"), createUser())
+                new Schedule(new ScheduleRequest("test title", "test cont"), createUser())
         );
     }
 

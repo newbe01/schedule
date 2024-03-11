@@ -2,7 +2,7 @@ package com.sparta.schedule.repository;
 
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ class ScheduleRepositoryTest {
         // given
         User user = new User("testUser", "testPw");
         userRepository.save(user);
-        ScheduleRequestDto request = new ScheduleRequestDto("test title", "test content");
+        ScheduleRequest request = new ScheduleRequest("test title", "test content");
 
         Schedule schedule = new Schedule(request, user);
 
@@ -74,7 +74,7 @@ class ScheduleRepositoryTest {
     private Schedule createSchedule() {
         User user = new User("testUser", "testPw");
         userRepository.save(user);
-        ScheduleRequestDto request = new ScheduleRequestDto("test title", "test content");
+        ScheduleRequest request = new ScheduleRequest("test title", "test content");
         return new Schedule(request, user);
     }
 }

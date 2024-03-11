@@ -1,7 +1,7 @@
 package com.sparta.schedule.domain;
 
 import com.sparta.schedule.dto.comment.CommentRequest;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -17,7 +17,7 @@ class CommentTest {
     void newCommentTest() {
         // given
         User user = new User("test", "test");
-        Schedule schedule = new Schedule(new ScheduleRequestDto("title", "content"), user);
+        Schedule schedule = new Schedule(new ScheduleRequest("title", "content"), user);
         CommentRequest request = new CommentRequest("test");
 
         // when
@@ -34,7 +34,7 @@ class CommentTest {
     void updateCommentTest() {
         // given
         User user = new User("test", "test");
-        Schedule schedule = new Schedule(new ScheduleRequestDto("title", "content"), user);
+        Schedule schedule = new Schedule(new ScheduleRequest("title", "content"), user);
         Comment comment = new Comment(new CommentRequest("test"), schedule, user);
 
         CommentRequest request = new CommentRequest("update");

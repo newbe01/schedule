@@ -1,7 +1,7 @@
 package com.sparta.schedule.domain;
 
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
-import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
+import com.sparta.schedule.dto.schedule.ScheduleUpdate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,7 +18,7 @@ class ScheduleTest {
 
         // given
         User user = new User("test", "test");
-        ScheduleRequestDto requestDto = new ScheduleRequestDto("title", "content");
+        ScheduleRequest requestDto = new ScheduleRequest("title", "content");
         Schedule schedule = new Schedule(requestDto, user);
 
         // when & then
@@ -33,10 +33,10 @@ class ScheduleTest {
 
         // given
         User user = new User("test", "test");
-        ScheduleRequestDto requestDto = new ScheduleRequestDto("title", "content");
+        ScheduleRequest requestDto = new ScheduleRequest("title", "content");
         Schedule schedule = new Schedule(requestDto, user);
 
-        ScheduleUpdateDto updateDto = new ScheduleUpdateDto("update title", "update contents");
+        ScheduleUpdate updateDto = new ScheduleUpdate("update title", "update contents");
         schedule.updateSchedule(updateDto);
 
         // when & then
@@ -50,7 +50,7 @@ class ScheduleTest {
     void completionYn() {
         // given
         User user = new User("test", "test");
-        ScheduleRequestDto requestDto = new ScheduleRequestDto("title", "content");
+        ScheduleRequest requestDto = new ScheduleRequest("title", "content");
         Schedule schedule = new Schedule(requestDto, user);
         schedule.updateCompletion();
 

@@ -2,8 +2,8 @@ package com.sparta.schedule.service;
 
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
-import com.sparta.schedule.dto.schedule.ScheduleRequestDto;
-import com.sparta.schedule.dto.schedule.ScheduleUpdateDto;
+import com.sparta.schedule.dto.schedule.ScheduleRequest;
+import com.sparta.schedule.dto.schedule.ScheduleUpdate;
 import com.sparta.schedule.repository.ScheduleRepository;
 import com.sparta.schedule.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +36,7 @@ class ScheduleServiceTest {
     void createSchedule() {
         // given
         User user = new User("testUser", "testPw");
-        ScheduleRequestDto request = new ScheduleRequestDto("title", "content");
+        ScheduleRequest request = new ScheduleRequest("title", "content");
         given(userRepository.findById(any())).willReturn(Optional.of(new User("testUser", "testPw")));
         given(scheduleRepository.save(any(Schedule.class))).willReturn(new Schedule(request, user));
 
@@ -58,7 +58,7 @@ class ScheduleServiceTest {
         // given
         Long id =1L;
         User user = new User("testUser", "testPw");
-        ScheduleRequestDto request = new ScheduleRequestDto("title", "content");
+        ScheduleRequest request = new ScheduleRequest("title", "content");
 
         given(scheduleRepository.findById(anyLong())).willReturn(Optional.of(new Schedule(request, user)));
 
@@ -94,11 +94,11 @@ class ScheduleServiceTest {
     void updateTest() {
         // given
         User user = new User("testUser", "testPw");
-        ScheduleRequestDto request = new ScheduleRequestDto("title", "content");
+        ScheduleRequest request = new ScheduleRequest("title", "content");
 
         Schedule schedule = new Schedule(request, user);
 
-        ScheduleUpdateDto updateRequest = new ScheduleUpdateDto("update", "update");
+        ScheduleUpdate updateRequest = new ScheduleUpdate("update", "update");
 
         given(scheduleRepository.findById(anyLong())).willReturn(Optional.of(schedule));
 
@@ -116,7 +116,7 @@ class ScheduleServiceTest {
     void completionTest() {
         // given
         User user = new User("testUser", "testPw");
-        ScheduleRequestDto request = new ScheduleRequestDto("title", "content");
+        ScheduleRequest request = new ScheduleRequest("title", "content");
         Schedule schedule = new Schedule(request, user);
 
         given(scheduleRepository.findById(anyLong())).willReturn(Optional.of(schedule));
