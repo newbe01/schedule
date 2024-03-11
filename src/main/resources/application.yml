@@ -3,27 +3,6 @@ logging.level:
   org.hibernate.sql: debug
   org.hibernate.orm.jdbc.bind: trace
 
-spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    driver-class-name: org.h2.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-  config:
-    activate:
-      on-profile: local
-
-jwt:
-  secret:
-    key: 7Iqk7YyM66W07YOA7L2U65Sp7YG065+9U3ByaW5n6rCV7J2Y7Yqc7YSw7LWc7JuQ67mI7J6F64uI64ukLg==
-
 ---
 
 spring:
@@ -39,9 +18,31 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  profiles:
+    active: local
+
+jwt:
+  secret:
+    key: 7Iqk7YyM66W07YOA7L2U65Sp7YG065+9U3ByaW5n6rCV7J2Y7Yqc7YSw7LWc7JuQ67mI7J6F64uI64ukLg==
+
+---
+
+spring:
   config:
     activate:
       on-profile: test
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    username: sa
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
 
 jwt:
   secret:
