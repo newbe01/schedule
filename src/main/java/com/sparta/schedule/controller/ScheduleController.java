@@ -1,7 +1,6 @@
 package com.sparta.schedule.controller;
 
 import com.sparta.schedule.common.CommonResponse;
-import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.schedule.ScheduleListResponse;
 import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import com.sparta.schedule.dto.schedule.ScheduleResponse;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

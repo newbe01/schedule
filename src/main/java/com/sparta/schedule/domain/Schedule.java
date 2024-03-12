@@ -2,19 +2,26 @@ package com.sparta.schedule.domain;
 
 import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import com.sparta.schedule.dto.schedule.ScheduleUpdate;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
-public class Schedule extends Timestamped{
+public class Schedule extends Timestamped {
 
     @Id
     @GeneratedValue

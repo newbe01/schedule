@@ -2,7 +2,6 @@ package com.sparta.schedule.business;
 
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.dto.schedule.ScheduleListResponse;
-import com.sparta.schedule.dto.schedule.ScheduleResponse;
 import com.sparta.schedule.exception.NotFoundException;
 import com.sparta.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;

@@ -31,8 +31,8 @@ public class CommentService {
         return CommentResponse.of(comment);
     }
 
-    public CommentResponse updateComment(Long scheduleId, Long commentId, CommentRequest commentRequest,
-        User user) {
+    public CommentResponse updateComment(Long scheduleId, Long commentId,
+        CommentRequest commentRequest, User user) {
 
         scheduleBusiness.findById(scheduleId);
         User findUser = userBusiness.findById(user.getId());

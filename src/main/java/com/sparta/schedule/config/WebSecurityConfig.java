@@ -35,7 +35,8 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+        throws Exception {
         return configuration.getAuthenticationManager();
     }
 
@@ -58,26 +59,27 @@ public class WebSecurityConfig {
 
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement((sessionManagement) ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
-                authorizeHttpRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
-                        .requestMatchers("/api/users/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-                        .requestMatchers("/v3/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/schedules/{id}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/schedules").permitAll()
-                        .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+            authorizeHttpRequests
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .permitAll() // resources 접근 허용 설정
+                .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
+                .requestMatchers("/api/users/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
+                .requestMatchers("/v3/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/schedules/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/schedules").permitAll()
+                .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
         http.exceptionHandling((exceptionHandling) ->
-                exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setCharacterEncoding("utf-8");
-                            response.getWriter().write("인증 처리 문제");
-                        })
+            exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setCharacterEncoding("utf-8");
+                response.getWriter().write("인증 처리 문제");
+            })
         );
 
         // 필터 관리

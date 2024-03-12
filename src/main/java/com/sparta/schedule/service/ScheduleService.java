@@ -9,7 +9,6 @@ import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import com.sparta.schedule.dto.schedule.ScheduleResponse;
 import com.sparta.schedule.dto.schedule.ScheduleUpdate;
 import com.sparta.schedule.exception.PermissionDeniedException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +41,6 @@ public class ScheduleService {
 
     @Transactional(readOnly = true)
     public Page<ScheduleListResponse> getSchedules(Pageable pageable) {
-        // todo: querydsl refactoring
         return scheduleBusiness.getAllSchedules(pageable);
     }
 

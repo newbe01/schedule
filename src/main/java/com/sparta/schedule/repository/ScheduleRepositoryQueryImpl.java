@@ -1,15 +1,10 @@
 package com.sparta.schedule.repository;
 
 import static com.sparta.schedule.domain.QSchedule.schedule;
-import static com.sparta.schedule.domain.QUser.*;
+import static com.sparta.schedule.domain.QUser.user;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sparta.schedule.domain.QUser;
-import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.dto.schedule.ScheduleListResponse;
 import com.sparta.schedule.dto.schedule.ScheduleResponse;
 import java.util.LinkedHashMap;
@@ -20,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 
 
 @RequiredArgsConstructor
@@ -45,7 +39,8 @@ public class ScheduleRepositoryQueryImpl implements ScheduleRepositoryQuery {
             .collect(Collectors.groupingBy(t -> t.get(user.username), LinkedHashMap::new,
                 Collectors.toList()))
             .entrySet().stream()
-            .map(entry -> new ScheduleListResponse(entry.getKey(), mapToScheduleList(entry.getValue())))
+            .map(entry -> new ScheduleListResponse(entry.getKey(),
+                mapToScheduleList(entry.getValue())))
             .toList();
 
         return new PageImpl<>(result, pageable, query.size());

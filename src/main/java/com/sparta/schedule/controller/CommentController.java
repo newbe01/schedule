@@ -1,7 +1,6 @@
 package com.sparta.schedule.controller;
 
 import com.sparta.schedule.common.CommonResponse;
-import com.sparta.schedule.domain.Comment;
 import com.sparta.schedule.dto.comment.CommentRequest;
 import com.sparta.schedule.dto.comment.CommentResponse;
 import com.sparta.schedule.security.UserDetailsImpl;
@@ -46,7 +45,8 @@ public class CommentController {
 
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        CommentResponse response = commentService.addComment(scheduleId, request, userDetails.getUser());
+        CommentResponse response = commentService.addComment(scheduleId, request,
+            userDetails.getUser());
 
         return CommonResponse.<CommentResponse>builder()
             .data(response)
@@ -70,7 +70,8 @@ public class CommentController {
         @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
 
-        CommentResponse response = commentService.updateComment(scheduleId, commentId, commentRequest,
+        CommentResponse response = commentService.updateComment(scheduleId, commentId,
+            commentRequest,
             userDetails.getUser());
 
         return CommonResponse.<CommentResponse>builder()
