@@ -52,7 +52,7 @@ public class ScheduleResponse {
         this.contents = schedule.getContents();
         this.username = schedule.getUser().getUsername();
         this.CompletionYn = schedule.isCompletionYn();
-        this.createAt = schedule.getCreatAt();
+        this.createAt = schedule.getCreatedAt();
         this.modifiedAt = schedule.getModifiedAt();
     }
 
@@ -62,7 +62,7 @@ public class ScheduleResponse {
             .contents(schedule.getContents())
             .username(schedule.getContents())
             .CompletionYn(schedule.isCompletionYn())
-            .createAt(schedule.getCreatAt())
+            .createAt(schedule.getCreatedAt())
             .modifiedAt(schedule.getModifiedAt())
             .build();
     }

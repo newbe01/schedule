@@ -29,7 +29,7 @@ public class ScheduleRepositoryQueryImpl implements ScheduleRepositoryQuery {
             .from(schedule)
             .leftJoin(schedule.user, user)
             .orderBy(user.username.asc())
-            .orderBy(schedule.creatAt.desc())
+            .orderBy(schedule.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();

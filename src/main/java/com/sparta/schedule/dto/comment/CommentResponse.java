@@ -34,7 +34,7 @@ public class CommentResponse {
     public CommentResponse(Comment comment) {
         this.content = comment.getContent();
         this.username = comment.getUser().getUsername();
-        this.createAt = comment.getCreatAt();
+        this.createAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
     }
 
@@ -42,7 +42,7 @@ public class CommentResponse {
         return CommentResponse.builder()
             .content(comment.getContent())
             .username(comment.getUser().getUsername())
-            .createAt(comment.getCreatAt())
+            .createAt(comment.getCreatedAt())
             .modifiedAt(comment.getModifiedAt())
             .build();
     }

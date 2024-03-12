@@ -10,6 +10,8 @@ import com.sparta.schedule.dto.comment.CommentRequest;
 import com.sparta.schedule.dto.comment.CommentResponse;
 import com.sparta.schedule.exception.PermissionDeniedException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,4 +62,9 @@ public class CommentService {
         commentBusiness.deleteComment(comment);
     }
 
+    public Page<CommentResponse> getComments(Long scheduleId, Pageable pageable) {
+        scheduleBusiness.findById(scheduleId);
+
+        return commentBusiness.getComments(scheduleId, pageable);
+    }
 }

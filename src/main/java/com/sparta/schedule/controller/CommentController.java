@@ -11,9 +11,12 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,6 +53,24 @@ public class CommentController {
 
         return CommonResponse.<CommentResponse>builder()
             .data(response)
+            .build();
+    }
+
+    @Operation(summary = "get comments", description = "댓글 전체 조회", responses = {
+        @ApiResponse(responseCode = "200", description = "successful"),
+        @ApiResponse(responseCode = "405", description = "Invalid")
+    })
+    @GetMapping("/{scheduleId}/comments")
+    public CommonResponse<Page<CommentResponse>> getComments(
+        @Parameter(description = "할일의 번호", in = ParameterIn.PATH)
+        @PathVariable("scheduleId") Long scheduleId,
+
+        Pageable pageable
+    ) {
+        Page<CommentResponse> responses = commentService.getComments(scheduleId, pageable);
+
+        return CommonResponse.<Page<CommentResponse>>builder()
+            .data(responses)
             .build();
     }
 

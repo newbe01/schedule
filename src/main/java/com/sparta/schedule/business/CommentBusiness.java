@@ -1,9 +1,12 @@
 package com.sparta.schedule.business;
 
 import com.sparta.schedule.domain.Comment;
+import com.sparta.schedule.dto.comment.CommentResponse;
 import com.sparta.schedule.exception.NotFoundException;
 import com.sparta.schedule.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -29,4 +32,7 @@ public class CommentBusiness {
         commentRepository.delete(comment);
     }
 
+    public Page<CommentResponse> getComments(Long scheduleId, Pageable pageable) {
+        return commentRepository.findAllComments(scheduleId, pageable);
+    }
 }

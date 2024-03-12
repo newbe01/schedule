@@ -71,6 +71,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/v3/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/schedules/{id}").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/schedules").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/{scheduleId}/comments").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
