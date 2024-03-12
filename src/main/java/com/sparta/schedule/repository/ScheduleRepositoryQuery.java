@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ScheduleRepositoryQuery {
 
-    Page<ScheduleListResponse> getAllSchedules(Pageable pageable);
+    Page<ScheduleListResponse> getAllSchedules(String titleCond, Pageable pageable);
 
 }

@@ -40,8 +40,8 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ScheduleListResponse> getSchedules(Pageable pageable) {
-        return scheduleBusiness.getAllSchedules(pageable);
+    public Page<ScheduleListResponse> getSchedules(String titleCond, Pageable pageable) {
+        return scheduleBusiness.getAllSchedules(titleCond, pageable);
     }
 
     public ScheduleResponse updateSchedule(Long id, ScheduleUpdate requestDto, User user) {

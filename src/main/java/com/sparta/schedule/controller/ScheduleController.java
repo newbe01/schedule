@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -76,8 +77,10 @@ public class ScheduleController {
     })
     @GetMapping("/schedules")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<Page<ScheduleListResponse>> getSchedules(Pageable pageable) {
-        Page<ScheduleListResponse> responses = scheduleService.getSchedules(pageable);
+    public CommonResponse<Page<ScheduleListResponse>> getSchedules(
+        @RequestParam(name = "titleCond", required = false) String titleCond,
+        Pageable pageable) {
+        Page<ScheduleListResponse> responses = scheduleService.getSchedules(titleCond, pageable);
 
         return CommonResponse.<Page<ScheduleListResponse>>builder()
             .data(responses)

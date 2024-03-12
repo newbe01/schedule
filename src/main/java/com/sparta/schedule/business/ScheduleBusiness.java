@@ -20,8 +20,8 @@ public class ScheduleBusiness {
             .orElseThrow(() -> new NotFoundException("없는 일정입니다."));
     }
 
-    public Page<ScheduleListResponse> getAllSchedules(Pageable pageable) {
-        return scheduleRepository.getAllSchedules(pageable);
+    public Page<ScheduleListResponse> getAllSchedules(String titleCond, Pageable pageable) {
+        return scheduleRepository.getAllSchedules(titleCond, pageable);
     }
 
     public Schedule save(Schedule schedule) {
