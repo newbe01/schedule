@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<String> notFoundException(Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<CommonResponse<Void>> notFoundException(Exception e) {
+        CommonResponse<Void> response = CommonResponse.<Void>builder()
+            .message(e.getMessage())
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({ValidationException.class})
@@ -28,7 +31,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(PermissionDeniedException.class)
-    public ResponseEntity<String> permissionDeniedException(Exception e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+    public ResponseEntity<CommonResponse<Void>> permissionDeniedException(Exception e) {
+        CommonResponse<Void> errorResponse = CommonResponse.<Void>builder()
+            .message(e.getMessage())
+            .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 }

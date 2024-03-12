@@ -1,5 +1,7 @@
 package com.sparta.schedule.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.schedule.common.CommonResponse;
 import com.sparta.schedule.dto.user.UserResponse;
 import com.sparta.schedule.dto.user.UserSignRequest;
@@ -10,6 +12,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -38,14 +42,14 @@ public class UserController {
         @Parameter(description = "회원 requestDto")
         @RequestBody @Valid UserSignRequest request
         , BindingResult bindingResult
-    ) {
-        String errorMessages = "";
+    ) throws JsonProcessingException {
+
+        Map<String, String> errorMap = new HashMap<>();
         if (bindingResult.hasErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessages +=
-                    fieldError.getField() + " : " + fieldError.getDefaultMessage() + "\n";
+                errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
             }
-            throw new ValidationException(errorMessages);
+            throw new ValidationException(parsingJson(errorMap));
         }
 
         UserResponse userResponse = userService.userSignup(request);
@@ -54,6 +58,11 @@ public class UserController {
             .data(userResponse)
             .message("회원가입 성공")
             .build();
+    }
+
+    private static String parsingJson(Map<String, String> errorMap) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(errorMap);
     }
 
 }

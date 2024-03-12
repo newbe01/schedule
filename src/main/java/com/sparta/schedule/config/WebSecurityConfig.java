@@ -1,5 +1,7 @@
 package com.sparta.schedule.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.schedule.common.CommonResponse;
 import com.sparta.schedule.jwt.JwtUtil;
 import com.sparta.schedule.security.JwtAuthenticationFilter;
 import com.sparta.schedule.security.JwtAuthorizationFilter;
@@ -79,7 +81,12 @@ public class WebSecurityConfig {
             exceptionHandling.authenticationEntryPoint((request, response, authException) -> {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setCharacterEncoding("utf-8");
-                response.getWriter().write("인증 처리 문제");
+
+                CommonResponse<Void> commonResponse = CommonResponse.<Void>builder()
+                    .message("인증 처리 문제")
+                    .build();
+                String jsonResponse = new ObjectMapper().writeValueAsString(commonResponse);
+                response.getWriter().write(jsonResponse);
             })
         );
 
