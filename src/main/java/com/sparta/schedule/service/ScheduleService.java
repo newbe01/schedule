@@ -4,12 +4,15 @@ import com.sparta.schedule.business.ScheduleBusiness;
 import com.sparta.schedule.business.UserBusiness;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
+import com.sparta.schedule.dto.schedule.ScheduleListResponse;
 import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import com.sparta.schedule.dto.schedule.ScheduleResponse;
 import com.sparta.schedule.dto.schedule.ScheduleUpdate;
 import com.sparta.schedule.exception.PermissionDeniedException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,9 +41,9 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> getSchedules() {
+    public Page<ScheduleListResponse> getSchedules(Pageable pageable) {
         // todo: querydsl refactoring
-        return userBusiness.findAll();
+        return scheduleBusiness.getAllSchedules(pageable);
     }
 
     public ScheduleResponse updateSchedule(Long id, ScheduleUpdate requestDto, User user) {

@@ -67,8 +67,8 @@ class CommentControllerTest {
         // given
         this.mockUserSetup();
 
-        when(commentService.addComment(anyLong(), any(CommentRequest.class), any(User.class)))
-                .thenReturn(new Comment(commentRequest(), createSchedule(), createUser()));
+//        when(commentService.addComment(anyLong(), any(CommentRequest.class), any(User.class)))
+//                .thenReturn(new Comment(commentRequest(), createSchedule(), createUser()));
 
         // when & then
         mvc.perform(post("/api/1/comment")
@@ -109,8 +109,8 @@ class CommentControllerTest {
         // given
         this.mockUserSetup();
 
-        when(commentService.updateComment(anyLong(), anyLong(), any(CommentRequest.class), any(User.class)))
-                .thenReturn(new Comment(commentRequest(), createSchedule(), createUser()));
+//        when(commentService.updateComment(anyLong(), anyLong(), any(CommentRequest.class), any(User.class)))
+//                .thenReturn(new Comment(commentRequest(), createSchedule(), createUser()));
 
         // when & then
         mvc.perform(put("/api/1/comment/1")

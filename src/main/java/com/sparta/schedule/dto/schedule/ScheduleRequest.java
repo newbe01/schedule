@@ -2,11 +2,15 @@ package com.sparta.schedule.dto.schedule;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @ToString
-@Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "할일 requestDto")

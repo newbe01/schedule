@@ -16,7 +16,7 @@ public class UserSignRequest {
     @Schema(description = "회원 아이디")
     private String username;
 
-    @Schema(description = "회원 비밀번호" )
+    @Schema(description = "회원 비밀번호")
     @Pattern(regexp = "^[a-zA-Z0-9]{8,15}$", message = "영대소문자와 숫자만, 8~15길이만 허용")
     private String password;
 

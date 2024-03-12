@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,14 +78,10 @@ public class ScheduleController {
     })
     @GetMapping("/schedules")
     @ResponseStatus(HttpStatus.OK)
-    public CommonResponse<List<ScheduleListResponse>> getSchedules() {
-        List<User> schedules = scheduleService.getSchedules();
+    public CommonResponse<Page<ScheduleListResponse>> getSchedules(Pageable pageable) {
+        Page<ScheduleListResponse> responses = scheduleService.getSchedules(pageable);
 
-        List<ScheduleListResponse> responses = schedules.stream()
-            .map(ScheduleListResponse::new)
-            .toList();
-
-        return CommonResponse.<List<ScheduleListResponse>>builder()
+        return CommonResponse.<Page<ScheduleListResponse>>builder()
             .data(responses)
             .build();
     }

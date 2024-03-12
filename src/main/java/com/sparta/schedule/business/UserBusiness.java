@@ -14,8 +14,9 @@ public class UserBusiness {
     private final UserRepository userRepository;
 
     public void findByUsername(String username) {
-        userRepository.findByUsername(username)
-            .orElseThrow(() -> new IllegalArgumentException("중복된 username 입니다."));
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("중복된 username 입니다");
+        }
     }
 
     public User findById(Long userId) {

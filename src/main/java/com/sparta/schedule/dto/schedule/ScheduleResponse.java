@@ -3,17 +3,14 @@ package com.sparta.schedule.dto.schedule;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sparta.schedule.domain.Schedule;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @ToString
-@Setter
 @Getter
 @Builder
 @Schema(description = "할일 responseDto")
@@ -39,6 +36,16 @@ public class ScheduleResponse {
 
     @Schema(description = "수정일")
     private LocalDateTime modifiedAt;
+
+    public ScheduleResponse(Long id, String title, String contents, String username,
+        boolean CompletionYn, LocalDateTime createAt, LocalDateTime modifiedAt) {
+        this.title = title;
+        this.contents = contents;
+        this.username = username;
+        this.CompletionYn = CompletionYn;
+        this.createAt = createAt;
+        this.modifiedAt = modifiedAt;
+    }
 
     public ScheduleResponse(Schedule schedule) {
         this.title = schedule.getTitle();
