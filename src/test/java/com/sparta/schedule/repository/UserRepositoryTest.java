@@ -1,20 +1,21 @@
 package com.sparta.schedule.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import com.sparta.schedule.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-@ActiveProfiles("test")
-@DataJpaTest
+@SpringBootTest
+@Transactional
 class UserRepositoryTest {
 
-    @Autowired private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @DisplayName("저장 테스트")
     @Test
@@ -54,8 +55,9 @@ class UserRepositoryTest {
         userRepository.delete(savedUser);
 
         // then
-        assertThatThrownBy(() -> userRepository.findById(savedUser.getId()).orElseThrow(() -> new IllegalArgumentException("")))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> userRepository.findById(savedUser.getId())
+            .orElseThrow(() -> new IllegalArgumentException("")))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("회원명으로 회원 찾기")
@@ -82,8 +84,9 @@ class UserRepositoryTest {
         String username = "testUser2";
 
         // when & then
-        assertThatThrownBy(() -> userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("")))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> userRepository.findByUsername(username)
+            .orElseThrow(() -> new IllegalArgumentException("")))
+            .isInstanceOf(IllegalArgumentException.class);
 
     }
 

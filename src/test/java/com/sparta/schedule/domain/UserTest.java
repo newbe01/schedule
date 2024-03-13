@@ -1,12 +1,10 @@
 package com.sparta.schedule.domain;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 @DisplayName("회원 테스트")
 class UserTest {
 

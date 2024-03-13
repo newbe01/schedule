@@ -1,14 +1,13 @@
 package com.sparta.schedule.dto.schedule;
 
-import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.domain.User;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
+import com.sparta.schedule.domain.Schedule;
+import com.sparta.schedule.domain.User;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 @DisplayName("할일 Dto 테스트")
 class ScheduleDtoTest {
 
@@ -63,16 +62,20 @@ class ScheduleDtoTest {
         user.getScheduleList().add(createSchedule());
         user.getScheduleList().add(createSchedule());
 
-//        ScheduleListResponse response = new ScheduleListResponse(user);
+        List<ScheduleResponse> list = user.getScheduleList().stream()
+            .map(ScheduleResponse::new)
+            .toList();
+
+        ScheduleListResponse response = new ScheduleListResponse(user.getUsername(), list);
 
         // when & then
-//        assertThat(response.getSchedules()).hasSize(9);
+        assertThat(response.getSchedules()).hasSize(9);
     }
 
     private Schedule createSchedule() {
         return new Schedule(
-                new ScheduleRequest("test title", "test content"),
-                new User("testUser", "testPw")
+            new ScheduleRequest("test title", "test content"),
+            new User("testUser", "testPw")
         );
     }
 }

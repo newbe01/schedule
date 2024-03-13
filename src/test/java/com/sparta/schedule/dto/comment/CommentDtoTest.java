@@ -1,16 +1,14 @@
 package com.sparta.schedule.dto.comment;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.sparta.schedule.domain.Comment;
 import com.sparta.schedule.domain.Schedule;
 import com.sparta.schedule.domain.User;
 import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@ActiveProfiles("test")
 @DisplayName("댓글 Dto 테스트")
 class CommentDtoTest {
 
@@ -44,12 +42,13 @@ class CommentDtoTest {
     private User createUser() {
         return new User("testUser", "testPw");
     }
+
     private Comment createComment() {
         return new Comment(
-                1L,
-                "test content",
-                createUser(),
-                new Schedule(new ScheduleRequest("test title", "test cont"), createUser())
+            1L,
+            "test content",
+            createUser(),
+            new Schedule(new ScheduleRequest("test title", "test cont"), createUser())
         );
     }
 

@@ -1,38 +1,36 @@
 package com.sparta.schedule.service;
 
-import com.sparta.schedule.domain.Comment;
-import com.sparta.schedule.domain.Schedule;
-import com.sparta.schedule.domain.User;
-import com.sparta.schedule.dto.comment.CommentRequest;
-import com.sparta.schedule.repository.CommentRepository;
-import com.sparta.schedule.repository.ScheduleRepository;
-import com.sparta.schedule.repository.UserRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
-@ActiveProfiles("test")
+import com.sparta.schedule.business.CommentBusiness;
+import com.sparta.schedule.business.ScheduleBusiness;
+import com.sparta.schedule.business.UserBusiness;
+import com.sparta.schedule.domain.Comment;
+import com.sparta.schedule.domain.Schedule;
+import com.sparta.schedule.domain.User;
+import com.sparta.schedule.dto.comment.CommentRequest;
+import com.sparta.schedule.dto.comment.CommentResponse;
+import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
     @Mock
-    CommentRepository commentRepository;
+    CommentBusiness commentBusiness;
     @Mock
-    ScheduleRepository scheduleRepository;
+    ScheduleBusiness scheduleBusiness;
     @Mock
-    UserRepository userRepository;
+    UserBusiness userBusiness;
     @InjectMocks
     CommentService commentService;
 
@@ -43,18 +41,17 @@ class CommentServiceTest {
         User user = new User("testUser", "testPw");
         CommentRequest request = new CommentRequest("test comment");
 
-        given(scheduleRepository.findById(anyLong())).willReturn(Optional.of(new Schedule()));
-        given(userRepository.findById(any())).willReturn(Optional.of(new User()));
-        given(commentRepository.save(any())).willReturn(new Comment(request, new Schedule(), user));
+        given(scheduleBusiness.findById(anyLong())).willReturn(new Schedule());
+        given(userBusiness.findById(any())).willReturn(new User());
+        given(commentBusiness.save(any())).willReturn(new Comment(request, new Schedule(), user));
 
         // when
-//        Comment savedComment = commentService.addComment(1L, request, user);
+        CommentResponse result = commentService.addComment(1L, request, user);
 
         // then
-        then(commentRepository).should().save(any(Comment.class));
-//        assertThat(savedComment.getUser()).isEqualTo(user);
-//        assertThat(savedComment.getContent()).isEqualTo(request.getContent());
-
+        then(commentBusiness).should().save(any(Comment.class));
+        assertThat(result.getUsername()).isEqualTo(user.getUsername());
+        assertThat(result.getContent()).isEqualTo(request.getContent());
     }
 
     @DisplayName("댓글 수정 테스트")
@@ -67,16 +64,17 @@ class CommentServiceTest {
 
         CommentRequest request = new CommentRequest("update comment");
 
-        given(scheduleRepository.findById(anyLong())).willReturn(Optional.of(new Schedule()));
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
-        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment));
+        given(scheduleBusiness.findById(anyLong())).willReturn(new Schedule());
+        given(userBusiness.findById(any())).willReturn(user);
+        given(commentBusiness.findById(anyLong())).willReturn(comment);
+        given(commentBusiness.udpateComment(any(Comment.class))).willReturn(new Comment(request, schedule, user));
 
         // when
-//        Comment updateComment = commentService.updateComment(1L, 1L, request, user);
+        CommentResponse response = commentService.updateComment(1L, 1L, request, user);
 
         // then
-        then(commentRepository).should().findById(any());
-//        assertThat(updateComment.getContent()).isEqualTo(request.getContent());
+        then(commentBusiness).should().findById(any());
+        assertThat(response.getContent()).isEqualTo(request.getContent());
 
     }
 
@@ -88,14 +86,14 @@ class CommentServiceTest {
         Schedule schedule = new Schedule();
         Comment comment = new Comment(new CommentRequest("test comment"), schedule, user);
 
-        given(scheduleRepository.findById(anyLong())).willReturn(Optional.of(new Schedule()));
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
-        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment));
+        given(scheduleBusiness.findById(anyLong())).willReturn(new Schedule());
+        given(userBusiness.findById(any())).willReturn(user);
+        given(commentBusiness.findById(anyLong())).willReturn(comment);
 
         // when
         commentService.deleteComment(1L, 1L, user);
 
         // then
-        then(commentRepository).should().delete(any(Comment.class));
+        then(commentBusiness).should().deleteComment(any(Comment.class));
     }
 }

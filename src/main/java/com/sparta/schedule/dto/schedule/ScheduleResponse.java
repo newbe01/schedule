@@ -60,7 +60,7 @@ public class ScheduleResponse {
         return ScheduleResponse.builder()
             .title(schedule.getTitle())
             .contents(schedule.getContents())
-            .username(schedule.getContents())
+            .username(schedule.getUser().getUsername())
             .CompletionYn(schedule.isCompletionYn())
             .createAt(schedule.getCreatedAt())
             .modifiedAt(schedule.getModifiedAt())

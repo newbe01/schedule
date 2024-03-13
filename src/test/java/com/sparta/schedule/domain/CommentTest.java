@@ -1,14 +1,12 @@
 package com.sparta.schedule.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.sparta.schedule.dto.comment.CommentRequest;
 import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-@ActiveProfiles("test")
 @DisplayName("댓글 테스트")
 class CommentTest {
 

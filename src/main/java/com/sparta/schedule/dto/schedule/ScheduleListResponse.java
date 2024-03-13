@@ -18,6 +18,7 @@ public class ScheduleListResponse {
     @Schema(description = "작성자")
     private String username;
 
+    @Builder.Default
     @Schema(description = "할일 목록")
     private List<ScheduleResponse> schedules = new ArrayList<>();
 
