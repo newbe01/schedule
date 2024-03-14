@@ -10,9 +10,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-@Aspect
+//@Aspect
 @Slf4j
-@Component
+//@Component
 public class LogAop {
 
     @Pointcut("execution(* com.sparta.schedule.controller..*.*(..))")

@@ -37,16 +37,6 @@ public class ScheduleResponse {
     @Schema(description = "수정일")
     private LocalDateTime modifiedAt;
 
-    public ScheduleResponse(Long id, String title, String contents, String username,
-        boolean CompletionYn, LocalDateTime createAt, LocalDateTime modifiedAt) {
-        this.title = title;
-        this.contents = contents;
-        this.username = username;
-        this.CompletionYn = CompletionYn;
-        this.createAt = createAt;
-        this.modifiedAt = modifiedAt;
-    }
-
     public ScheduleResponse(Schedule schedule) {
         this.title = schedule.getTitle();
         this.contents = schedule.getContents();
