@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
         CommonResponse<Void> response = CommonResponse.<Void>builder()
             .message(e.getMessage())
             .build();
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ValidationException.class})

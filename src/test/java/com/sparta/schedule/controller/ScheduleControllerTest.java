@@ -20,6 +20,8 @@ import com.sparta.schedule.dto.schedule.ScheduleListResponse;
 import com.sparta.schedule.dto.schedule.ScheduleRequest;
 import com.sparta.schedule.dto.schedule.ScheduleResponse;
 import com.sparta.schedule.dto.schedule.ScheduleUpdate;
+import com.sparta.schedule.exception.NotFoundException;
+import com.sparta.schedule.s3.S3UploadService;
 import com.sparta.schedule.security.UserDetailsImpl;
 import com.sparta.schedule.service.ScheduleService;
 import java.security.Principal;
@@ -28,6 +30,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -53,6 +56,10 @@ class ScheduleControllerTest {
 
     private MockMvc mvc;
     private Principal mockPrincipal;
+
+    @MockBean
+    S3UploadService s3UploadService;
+
     @Autowired
     ObjectMapper mapper;
     @Autowired
@@ -98,13 +105,14 @@ class ScheduleControllerTest {
         String request = mapper.writeValueAsString(requestDto);
         this.mockUserSetup();
 
-        when(scheduleService.createSchedule(any(ScheduleRequest.class), any(User.class)))
-            .thenThrow(new IllegalArgumentException("없는 회원입니다."));
+        when(s3UploadService.saveFile(anyString(), any())).thenReturn("");
+        when(scheduleService.createSchedule(any(), any(User.class)))
+            .thenThrow(new NotFoundException("없는 회원입니다."));
 
         // when & then
         mvc.perform(post("/api/schedules")
                 .content(request)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .principal(mockPrincipal)
